@@ -735,7 +735,10 @@
     try {
       const saved = localStorage.getItem('webikit_wallet');
       if (saved) {
-        state = JSON.parse(saved);
+        const data = JSON.parse(saved);
+        state.balance = data.balance || 0;
+        state.transactions = data.transactions || [];
+        state.userId = data.userId || 'USR-' + Math.floor(100000 + Math.random() * 900000);
       } else {
         state.userId = 'USR-' + Math.floor(100000 + Math.random() * 900000);
         saveState();
@@ -959,6 +962,16 @@
 
   // Initialize
   loadState();
+  
+  // Auto-refresh balance every 2 seconds
+  setInterval(loadState, 2000);
+  
+  // Listen for storage changes from admin.html
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'webikit_wallet') {
+      loadState();
+    }
+  });
 </script>
 </body>
 </html>
