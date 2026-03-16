@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apex Consult — Increase Audience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --ink-light: #14141e;
+    --ink-mid: #1e1e2e;
+    --card: #161625;
+    --border: rgba(255,255,255,0.07);
+    --gold: #c9a55a;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,165,90,0.15);
+    --accent: #5a7ff5;
+    --text: #e8e8f0;
+    --muted: #7878a0;
+    --faint: rgba(255,255,255,0.04);
+    --radius: 16px;
+    --radius-sm: 10px;
+
+    /* Platform colours */
+    --insta: #e1306c;
+    --insta-dim: rgba(225,48,108,0.12);
+    --yt: #ff0000;
+    --yt-dim: rgba(255,0,0,0.1);
+    --wa: #25d366;
+    --wa-dim: rgba(37,211,102,0.1);
+    --fb: #1877f2;
+    --fb-dim: rgba(24,119,242,0.1);
+    --tg: #2aabee;
+    --tg-dim: rgba(42,171,238,0.1);
+    --tgp: #7b5ea7;
+    --tgp-dim: rgba(123,94,167,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ─── CURSOR ─── */
+  .cursor-dot {
+    width: 8px; height: 8px; background: var(--gold); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%); transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px; border: 1.5px solid var(--gold); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%); transition: all 0.18s ease; opacity: 0.5;
+  }
+
+  /* ─── NOISE ─── */
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025; pointer-events: none; z-index: 1;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 5vw;
+    background: rgba(10,10,15,0.88); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif; font-size: 1.4rem;
+    color: var(--gold); letter-spacing: 0.04em; text-decoration: none;
+  }
+  .nav-logo span { color: var(--text); font-weight: 300; font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--ink) !important;
+    padding: 0.55rem 1.4rem; border-radius: 50px; font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; }
+
+  /* ─── HERO ─── */
+  #page-hero {
+    min-height: 62vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 9rem 5vw 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,165,90,0.09) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 85% 70%, rgba(90,127,245,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 15% 80%, rgba(37,211,102,0.04) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+  .orb-1 { width: 400px; height: 400px; background: rgba(201,165,90,0.06); top: 5%; left: -10%; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(42,171,238,0.05); bottom: 10%; right: -5%; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold-dim); border: 1px solid rgba(201,165,90,0.3);
+    border-radius: 50px; padding: 0.4rem 1rem;
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    font-family: 'Space Mono', monospace;
+    animation: fadeUp 0.8s ease forwards; opacity: 0;
+  }
+  .hero-badge::before { content: '◆'; font-size: 0.5rem; }
+  .page-h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 900; line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.1s ease forwards; opacity: 0;
+  }
+  .page-h1 em { font-style: italic; color: var(--gold); }
+  .page-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted);
+    max-width: 640px; line-height: 1.7; margin-bottom: 3rem; font-weight: 300;
+    animation: fadeUp 0.8s 0.2s ease forwards; opacity: 0;
+  }
+
+  /* Platform pill bar */
+  .platform-pills {
+    display: flex; gap: 0.65rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.3s ease forwards; opacity: 0;
+  }
+  .platform-pill {
+    display: flex; align-items: center; gap: 0.45rem;
+    background: var(--faint); border: 1px solid var(--border);
+    border-radius: 50px; padding: 0.45rem 1rem;
+    font-size: 0.8rem; color: var(--muted);
+    font-family: 'Space Mono', monospace; letter-spacing: 0.04em;
+    transition: all 0.2s; text-decoration: none;
+  }
+  .platform-pill:hover { color: var(--text); }
+  .platform-pill .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .pp-insta { border-color: rgba(225,48,108,0.25); }
+  .pp-insta:hover { border-color: var(--insta); background: var(--insta-dim); }
+  .pp-yt { border-color: rgba(255,0,0,0.2); }
+  .pp-yt:hover { border-color: var(--yt); background: var(--yt-dim); }
+  .pp-wa { border-color: rgba(37,211,102,0.2); }
+  .pp-wa:hover { border-color: var(--wa); background: var(--wa-dim); }
+  .pp-fb { border-color: rgba(24,119,242,0.2); }
+  .pp-fb:hover { border-color: var(--fb); background: var(--fb-dim); }
+  .pp-tg { border-color: rgba(42,171,238,0.2); }
+  .pp-tg:hover { border-color: var(--tg); background: var(--tg-dim); }
+  .pp-tgp { border-color: rgba(123,94,167,0.2); }
+  .pp-tgp:hover { border-color: var(--tgp); background: var(--tgp-dim); }
+
+  /* ─── SHARED ─── */
+  section { padding: 6rem 5vw; position: relative; z-index: 2; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-label::after { content: ''; height: 1px; background: var(--gold); width: 40px; min-width: 40px; opacity: 0.4; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-desc { color: var(--muted); font-size: 1rem; max-width: 540px; line-height: 1.7; font-weight: 300; }
+
+  /* ─── HOW IT WORKS ─── */
+  #how { background: var(--ink-light); }
+  .how-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin-top: 3rem; max-width: 1000px;
+  }
+  .how-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 2rem; position: relative; overflow: hidden; transition: all 0.3s;
+  }
+  .how-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: translateX(-100%); transition: transform 0.45s ease;
+  }
+  .how-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.35); border-color: rgba(201,165,90,0.15); }
+  .how-card:hover::before { transform: translateX(0); }
+  .how-num {
+    font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900;
+    color: rgba(201,165,90,0.15); line-height: 1; margin-bottom: 1rem;
+  }
+  .how-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+  .how-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .how-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* ─── PLATFORM SECTIONS ─── */
+  .platform-section { padding: 5rem 5vw; position: relative; z-index: 2; }
+  .platform-section:nth-child(even) { background: var(--ink-light); }
+  .platform-section:nth-child(odd) { background: var(--ink); }
+
+  .platform-header {
+    display: flex; align-items: center; gap: 1.25rem; margin-bottom: 2.5rem;
+  }
+  .platform-icon-wrap {
+    width: 56px; height: 56px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+    border: 1px solid;
+  }
+  .platform-name {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 900; line-height: 1;
+  }
+  .platform-tagline { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; font-weight: 300; }
+
+  /* Pricing grid */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem; max-width: 1200px;
+  }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.6rem; position: relative; overflow: hidden;
+    transition: all 0.3s; cursor: default;
+  }
+  .price-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .price-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+  .price-card:hover::after { opacity: 0.5; }
+
+  .price-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.2rem; gap: 0.5rem; }
+  .price-service-name {
+    font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; line-height: 1.3;
+  }
+  .price-badge {
+    flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--gold-dim); border: 1px solid rgba(201,165,90,0.25);
+    color: var(--gold); border-radius: 50px; padding: 0.2rem 0.55rem;
+    white-space: nowrap;
+  }
+
+  .price-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+  }
+  .price-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .price-row-label {
+    font-size: 0.78rem; color: var(--muted); font-family: 'Space Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .price-values { display: flex; flex-direction: column; align-items: flex-end; gap: 0.15rem; }
+  .price-sell {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .price-margin {
+    font-size: 0.7rem; color: var(--muted); font-family: 'Space Mono', monospace;
+  }
+  .price-margin span { color: #4ade80; }
+
+  /* Profit chip */
+  .profit-chip {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 50px; padding: 0.3rem 0.7rem;
+    font-size: 0.7rem; color: #4ade80; font-family: 'Space Mono', monospace;
+    margin-top: 1rem;
+  }
+  .profit-chip::before { content: '↑'; font-weight: 700; }
+
+  /* Per-unit label */
+  .per-unit {
+    font-size: 0.65rem; color: var(--muted); font-family: 'Space Mono', monospace;
+    margin-top: 0.1rem; text-align: right;
+  }
+
+  /* ─── BYPASS TOOL NOTE ─── */
+  .bypass-note {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--gold-dim); border: 1px solid rgba(201,165,90,0.25);
+    border-radius: var(--radius); padding: 1.2rem 1.5rem;
+    margin-bottom: 2.5rem; max-width: 720px;
+  }
+  .bypass-note-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .bypass-note p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .bypass-note strong { color: var(--gold); }
+
+  /* ─── EARNINGS SUMMARY ─── */
+  #summary { background: var(--ink-light); }
+  .summary-header { margin-bottom: 3rem; text-align: center; }
+  .summary-header .section-label { justify-content: center; }
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .summary-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 2rem; text-align: center; position: relative; overflow: hidden; transition: all 0.3s;
+  }
+  .summary-card::before {
+    content: ''; position: absolute; inset: -1px; border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(201,165,90,0.1), transparent);
+    opacity: 0; transition: opacity 0.3s; z-index: -1;
+  }
+  .summary-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+  .summary-card:hover::before { opacity: 1; }
+  .summary-num {
+    font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900;
+    color: var(--gold); line-height: 1; margin-bottom: 0.4rem;
+  }
+  .summary-num sup { font-size: 1.3rem; vertical-align: super; }
+  .summary-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .summary-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  /* ─── CTA ─── */
+  #cta-banner { background: var(--ink); padding: 6rem 5vw; }
+  .cta-inner {
+    max-width: 860px; margin: 0 auto; text-align: center;
+    background: var(--card); border: 1px solid rgba(201,165,90,0.2);
+    border-radius: var(--radius); padding: 3.5rem 2.5rem; position: relative; overflow: hidden;
+  }
+  .cta-inner::before {
+    content: ''; position: absolute; inset: -1px;
+    background: linear-gradient(135deg, rgba(201,165,90,0.15), transparent 50%, rgba(90,127,245,0.08));
+    border-radius: var(--radius); z-index: -1;
+  }
+  .cta-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 1rem; }
+  .cta-inner h2 em { font-style: italic; color: var(--gold); }
+  .cta-inner p { color: var(--muted); font-size: 1rem; max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    background: var(--gold); color: var(--ink); padding: 0.85rem 2rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; text-decoration: none;
+    transition: all 0.25s; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,165,90,0.3); }
+  .btn-ghost {
+    background: transparent; color: var(--text); padding: 0.85rem 2rem; border-radius: 50px;
+    font-weight: 500; font-size: 0.9rem; border: 1px solid var(--border);
+    cursor: pointer; text-decoration: none; transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink); border-top: 1px solid var(--border);
+    padding: 2.5rem 5vw; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 2;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); }
+  .footer-logo span { color: var(--muted); }
+  footer p { font-size: 0.78rem; color: var(--muted); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── STICKY PLATFORM NAV ─── */
+  .platform-nav {
+    position: sticky; top: 72px; z-index: 90;
+    background: rgba(10,10,15,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 5vw;
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    align-items: center;
+  }
+  .pnav-label {
+    font-family: 'Space Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    margin-right: 0.5rem;
+  }
+  .pnav-btn {
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.35rem 0.85rem; border-radius: 50px;
+    font-size: 0.75rem; font-family: 'Space Mono', monospace;
+    border: 1px solid var(--border); color: var(--muted);
+    background: transparent; text-decoration: none; transition: all 0.2s;
+  }
+  .pnav-btn:hover { color: var(--text); }
+  .pnav-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .how-grid { grid-template-columns: 1fr 1fr; }
+    .pricing-grid { grid-template-columns: 1fr 1fr; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .how-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none; }
+    .platform-nav { top: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Webi<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="#instagram">Instagram</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#telegram">Telegram</a></li>
+    <li><a href="index.html#consult" class="nav-cta">Book Meeting →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="page-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-badge">Service Deep Dive</div>
+  <h1 class="page-h1">Increase Your<br><em>Audience</em> Fast</h1>
+  <p class="page-sub">Bypass the algorithm with our ByPass (Hack Tool) — real growth across Instagram, YouTube, WhatsApp, Facebook & Telegram. Transparent pricing, guaranteed delivery.</p>
+  <div class="platform-pills">
+    <a href="#instagram" class="platform-pill pp-insta"><span class="dot" style="background:var(--insta);"></span>Instagram</a>
+    <a href="#youtube" class="platform-pill pp-yt"><span class="dot" style="background:var(--yt);"></span>YouTube</a>
+    <a href="#whatsapp" class="platform-pill pp-wa"><span class="dot" style="background:var(--wa);"></span>WhatsApp</a>
+    <a href="#facebook" class="platform-pill pp-fb"><span class="dot" style="background:var(--fb);"></span>Facebook</a>
+    <a href="#telegram" class="platform-pill pp-tg"><span class="dot" style="background:var(--tg);"></span>Telegram</a>
+    <a href="#telegram-premium" class="platform-pill pp-tgp"><span class="dot" style="background:var(--tgp);"></span>Telegram Premium</a>
+  </div>
+</section>
+
+<!-- STICKY PLATFORM NAV -->
+<div class="platform-nav">
+  <span class="pnav-label">Jump to</span>
+  <a href="#instagram" class="pnav-btn"><span class="pnav-dot" style="background:var(--insta);"></span>Instagram</a>
+  <a href="#youtube" class="pnav-btn"><span class="pnav-dot" style="background:var(--yt);"></span>YouTube</a>
+  <a href="#whatsapp" class="pnav-btn"><span class="pnav-dot" style="background:var(--wa);"></span>WhatsApp</a>
+  <a href="#facebook" class="pnav-btn"><span class="pnav-dot" style="background:var(--fb);"></span>Facebook</a>
+  <a href="#telegram" class="pnav-btn"><span class="pnav-dot" style="background:var(--tg);"></span>Telegram</a>
+  <a href="#telegram-premium" class="pnav-btn"><span class="pnav-dot" style="background:var(--tgp);"></span>TG Premium</a>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background:var(--ink-light);">
+  <div class="reveal">
+    <div class="section-label">The Method</div>
+    <h2 class="section-title">ByPass <em>Hack Tool</em> — How It Works</h2>
+    <p class="section-desc">Three simple steps to growing your audience across every major platform. Transparent pricing, instant delivery, real results.</p>
+  </div>
+  <div class="how-grid reveal">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-icon">🎯</div>
+      <h3>Choose Your Platform & Service</h3>
+      <p>Select the platform and the exact metric you want to grow — views, followers, likes, watch time, or subscribers. Every service is priced per 1000 units.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-icon">💳</div>
+      <h3>Pay the Client Rate</h3>
+      <p>Clients are charged our listed sell price per 1000. You earn the margin between what they pay and our cost — tracked transparently on every order.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-icon">📈</div>
+      <h3>Delivery & Profit</h3>
+      <p>Orders are processed via our ByPass tool. Delivery begins automatically. Your earnings (the margin) are credited directly to your account per batch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     INSTAGRAM
+═══════════════════════════════════ -->
+<div class="platform-section" id="instagram" style="background:var(--ink);">
+  <div class="bypass-note">
+    <div class="bypass-note-icon">⚡</div>
+    <p><strong>ByPass (Hack Tool)</strong> — Instagram services delivered via our proprietary engagement engine. All prices are per 1000 units. You charge clients the sell price; we charge you the cost. <strong>You keep the margin.</strong></p>
+  </div>
+  <div class="platform-header reveal">
+    <div class="platform-icon-wrap" style="background:var(--insta-dim);border-color:rgba(225,48,108,0.3);color:var(--insta);">📸</div>
+    <div>
+      <div class="platform-name" style="color:var(--insta);">Instagram</div>
+      <div class="platform-tagline">Views · Likes · Followers — Per 1000 units</div>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <div class="price-card" style="border-color:rgba(225,48,108,0.15); color:var(--insta);">
+      <div class="price-card-top">
+        <div class="price-service-name">Instagram Views</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values">
+          <div class="price-sell" style="color:var(--gold);">₹1.00</div>
+          <div class="per-unit">per 1000 views</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values">
+          <div style="font-size:0.9rem;color:var(--muted);">₹0.39</div>
+          <div class="per-unit">per 1000</div>
+        </div>
+      </div>
+      <div class="profit-chip">You earn ₹0.61 / 1000 views</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(225,48,108,0.15); color:var(--insta);">
+      <div class="price-card-top">
+        <div class="price-service-name">Instagram Likes</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values">
+          <div class="price-sell" style="color:var(--gold);">₹30.00</div>
+          <div class="per-unit">per 1000 likes</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values">
+          <div style="font-size:0.9rem;color:var(--muted);">₹16.00</div>
+          <div class="per-unit">per 1000</div>
+        </div>
+      </div>
+      <div class="profit-chip">You earn ₹14.00 / 1000 likes</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(225,48,108,0.15); color:var(--insta);">
+      <div class="price-card-top">
+        <div class="price-service-name">Instagram Followers</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values">
+          <div class="price-sell" style="color:var(--gold);">₹200.00</div>
+          <div class="per-unit">per 1000 followers</div>
+        </div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values">
+          <div style="font-size:0.9rem;color:var(--muted);">₹149.00</div>
+          <div class="per-unit">per 1000</div>
+        </div>
+      </div>
+      <div class="profit-chip">You earn ₹51.00 / 1000 followers</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     YOUTUBE
+═══════════════════════════════════ -->
+<div class="platform-section" id="youtube" style="background:var(--ink-light);">
+  <div class="platform-header reveal">
+    <div class="platform-icon-wrap" style="background:var(--yt-dim);border-color:rgba(255,0,0,0.3);color:var(--yt);">▶️</div>
+    <div>
+      <div class="platform-name" style="color:var(--yt);">YouTube</div>
+      <div class="platform-tagline">Views · Likes · Comments · Watch Time · Subscribers · Live — Per 1000 units</div>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <div class="price-card" style="border-color:rgba(255,0,0,0.12);">
+      <div class="price-card-top">
+        <div class="price-service-name">YouTube Views<br><span style="font-size:0.72rem;color:var(--muted);font-family:'Space Mono',monospace;">Video / Shorts</span></div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell">₹99.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹78.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹21.00 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(255,0,0,0.12);">
+      <div class="price-card-top">
+        <div class="price-service-name">YouTube Likes</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell">₹70.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹54.95</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹15.05 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(255,0,0,0.12);">
+      <div class="price-card-top">
+        <div class="price-service-name">YouTube Comments</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell">₹500.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹406.75</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹93.25 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(255,0,0,0.12);">
+      <div class="price-card-top">
+        <div class="price-service-name">YouTube Watch Time</div>
+        <div class="price-badge">per 1000 hrs</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell">₹2,900.00</div><div class="per-unit">per 1000 hrs</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹2,540.00</div><div class="per-unit">per 1000 hrs</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹360.00 / 1000 hrs</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(255,0,0,0.12);">
+      <div class="price-card-top">
+        <div class="price-service-name">YouTube Subscribers</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell">₹3,806.95</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹2,806.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹1,000.95 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(255,0,0,0.12);">
+      <div class="price-card-top">
+        <div class="price-service-name">YouTube Live Stream Views</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell">₹30.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹8.31</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹21.69 / 1000</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     WHATSAPP
+═══════════════════════════════════ -->
+<div class="platform-section" id="whatsapp" style="background:var(--ink);">
+  <div class="platform-header reveal">
+    <div class="platform-icon-wrap" style="background:var(--wa-dim);border-color:rgba(37,211,102,0.3);color:var(--wa);">💬</div>
+    <div>
+      <div class="platform-name" style="color:var(--wa);">WhatsApp</div>
+      <div class="platform-tagline">Bulk Services — Per 1000 units</div>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <div class="price-card" style="border-color:rgba(37,211,102,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">WhatsApp Services</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--wa);">₹215.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹156.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹59.00 / 1000</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     FACEBOOK
+═══════════════════════════════════ -->
+<div class="platform-section" id="facebook" style="background:var(--ink-light);">
+  <div class="platform-header reveal">
+    <div class="platform-icon-wrap" style="background:var(--fb-dim);border-color:rgba(24,119,242,0.3);color:var(--fb);">👥</div>
+    <div>
+      <div class="platform-name" style="color:var(--fb);">Facebook</div>
+      <div class="platform-tagline">Followers · Likes · Post Reach · Page Likes — Per 1000 units</div>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <div class="price-card" style="border-color:rgba(24,119,242,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Facebook Followers</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--fb);">₹155.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹102.72</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹52.28 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(24,119,242,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Facebook Likes</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--fb);">₹45.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹34.16</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹10.84 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(24,119,242,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Facebook Post Reach</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--fb);">₹72.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹41.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹31.00 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(24,119,242,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Facebook Page + Likes</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--fb);">₹161.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹61.92</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹99.08 / 1000</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     TELEGRAM
+═══════════════════════════════════ -->
+<div class="platform-section" id="telegram" style="background:var(--ink);">
+  <div class="platform-header reveal">
+    <div class="platform-icon-wrap" style="background:var(--tg-dim);border-color:rgba(42,171,238,0.3);color:var(--tg);">✈️</div>
+    <div>
+      <div class="platform-name" style="color:var(--tg);">Telegram</div>
+      <div class="platform-tagline">Bot Starts · Views · Post Shares · Members · Comments — Per 1000 units</div>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Bot Start</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹53.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹31.97</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹21.03 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Real Views</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹15.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹8.42</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹6.58 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Post Share</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹12.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹2.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹10.00 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Comments</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹282.38</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹252.38</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹30.00 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Story Views</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹28.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹16.83</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹11.17 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Bot Start Referral</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹180.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹89.74</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹90.26 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Members</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹60.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹6.10</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹53.90 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(42,171,238,0.15);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram No Drop Members</div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tg);">₹100.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹50.49</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹49.51 / 1000</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     TELEGRAM PREMIUM
+═══════════════════════════════════ -->
+<div class="platform-section" id="telegram-premium" style="background:var(--ink-light);">
+  <div class="platform-header reveal">
+    <div class="platform-icon-wrap" style="background:var(--tgp-dim);border-color:rgba(123,94,167,0.3);color:var(--tgp);">⭐</div>
+    <div>
+      <div class="platform-name" style="color:var(--tgp);">Telegram Premium</div>
+      <div class="platform-tagline">Premium Memberships — 30 · 60 · 90 · 365 days — Per 1000 members</div>
+    </div>
+  </div>
+
+  <div class="bypass-note" style="background:rgba(123,94,167,0.08);border-color:rgba(123,94,167,0.2);">
+    <div class="bypass-note-icon">⭐</div>
+    <p><strong style="color:var(--tgp);">Telegram Premium Members</strong> — Deliver premium subscriptions in bulk. Choose from 30, 60, 90 or 365-day plans. Higher duration = higher margin. Also available: <strong style="color:var(--tgp);">Premium + Online</strong> combo.</p>
+  </div>
+
+  <div class="pricing-grid reveal">
+
+    <div class="price-card" style="border-color:rgba(123,94,167,0.2);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Premium<br><span style="color:var(--tgp);font-family:'Space Mono',monospace;font-size:0.78rem;">30 Days</span></div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tgp);">₹700.00</div><div class="per-unit">per 1000 members</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹503.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹197.00 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(123,94,167,0.2);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Premium<br><span style="color:var(--tgp);font-family:'Space Mono',monospace;font-size:0.78rem;">60 Days</span></div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tgp);">₹2,884.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹1,884.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹1,000.00 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(123,94,167,0.2);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Premium<br><span style="color:var(--tgp);font-family:'Space Mono',monospace;font-size:0.78rem;">90 Days</span></div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tgp);">₹3,200.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹2,891.64</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹308.36 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(123,94,167,0.2);">
+      <div class="price-card-top">
+        <div class="price-service-name">Telegram Premium<br><span style="color:var(--tgp);font-family:'Space Mono',monospace;font-size:0.78rem;">365 Days</span></div>
+        <div class="price-badge">per 1000</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tgp);">₹4,539.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹3,539.60</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip">You earn ₹999.40 / 1000</div>
+    </div>
+
+    <div class="price-card" style="border-color:rgba(123,94,167,0.3); background: linear-gradient(135deg, var(--card), rgba(123,94,167,0.06));">
+      <div class="price-card-top">
+        <div class="price-service-name">Premium Members + Online</div>
+        <div class="price-badge" style="background:rgba(123,94,167,0.2);border-color:rgba(123,94,167,0.4);color:var(--tgp);">combo</div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Sell to client</div>
+        <div class="price-values"><div class="price-sell" style="color:var(--tgp);">₹1,500.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="price-row">
+        <div class="price-row-label">Our cost</div>
+        <div class="price-values"><div style="font-size:0.9rem;color:var(--muted);">₹504.00</div><div class="per-unit">per 1000</div></div>
+      </div>
+      <div class="profit-chip" style="background:rgba(123,94,167,0.15);border-color:rgba(123,94,167,0.3);color:var(--tgp);">You earn ₹996.00 / 1000</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EARNINGS SUMMARY -->
+<section id="summary" style="background:var(--ink);">
+  <div class="summary-header reveal">
+    <div class="section-label">Your Earning Potential</div>
+    <h2 class="section-title">Numbers That<br><em>Add Up</em> Fast</h2>
+    <p class="section-desc" style="margin:0 auto;text-align:center;">The more clients you resell to, the more margin stacks. Here's what consistent volume looks like.</p>
+  </div>
+  <div class="summary-grid reveal">
+    <div class="summary-card">
+      <div class="summary-num">6<sup>+</sup></div>
+      <div class="summary-label">Platforms Covered</div>
+      <div class="summary-desc">Instagram, YouTube, WhatsApp, Facebook, Telegram & Telegram Premium — all in one place.</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-num">20<sup>+</sup></div>
+      <div class="summary-label">Individual Services</div>
+      <div class="summary-desc">From views and likes to watch time, subscribers, members, and premium accounts.</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-num">₹0</div>
+      <div class="summary-label">Upfront Stock Cost</div>
+      <div class="summary-desc">Pay only when you resell. No inventory. No risk. Collect from clients, then place the order.</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-num">~66<sup>%</sup></div>
+      <div class="summary-label">Best Margin (TG Members)</div>
+      <div class="summary-desc">Telegram Members: sell at ₹60, cost ₹6.10 — that's nearly 10× markup at scale.</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-num">₹996</div>
+      <div class="summary-label">Earn Per 1000 (Best)</div>
+      <div class="summary-desc">Telegram Premium + Online combo: sell ₹1500, pay ₹504. ₹996 margin per 1000 members.</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-num">Fast</div>
+      <div class="summary-label">Delivery Speed</div>
+      <div class="summary-desc">Orders begin processing immediately via the ByPass tool — no waiting for approvals or queues.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta-banner">
+  <div class="cta-inner reveal">
+    <div class="hero-badge" style="margin:0 auto 1.5rem;width:fit-content;">Ready to Resell?</div>
+    <h2>Start Growing Your Clients'<br><em>Audience</em> Today</h2>
+    <p>Book a free consultation. We'll walk you through the ByPass tool, set up your reseller account, and help you price your first orders.</p>
+    <div class="cta-buttons">
+      <a href="index.html#consult" class="btn-primary">Book Free Consultation ✦</a>
+      <a href="index.html#pricing" class="btn-ghost">View All Services →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Apex<span>Consult</span></div>
+  <p>© 2025 ApexConsult. All rights reserved.</p>
+  <p style="color:var(--gold);font-family:'Space Mono',monospace;font-size:0.75rem;">hello@apexconsult.in</p>
+</footer>
+
+<script>
+  // Cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+    setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 60);
+  });
+  document.querySelectorAll('a, button, .price-card, .how-card, .summary-card, .platform-pill, .pnav-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%,-50%) scale(1.6)'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '0.5'; });
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 70);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+
+  // Profit chip auto-calc colour
+  document.querySelectorAll('.profit-chip').forEach(chip => {
+    const text = chip.textContent;
+    const match = text.match(/₹([\d,]+)/);
+    if (match) {
+      const val = parseFloat(match[1].replace(',', ''));
+      if (val >= 500) chip.style.background = 'rgba(74,222,128,0.14)';
+      else if (val >= 100) chip.style.background = 'rgba(74,222,128,0.1)';
+    }
+  });
+</script>
+</body>
+</html> 

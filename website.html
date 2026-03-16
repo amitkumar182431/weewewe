@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apex Consult — Premium Strategy & Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --ink-light: #14141e;
+    --ink-mid: #1e1e2e;
+    --surface: #111120;
+    --card: #161625;
+    --border: rgba(255,255,255,0.07);
+    --gold: #c9a55a;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,165,90,0.15);
+    --accent: #5a7ff5;
+    --accent-glow: rgba(90,127,245,0.25);
+    --text: #e8e8f0;
+    --muted: #7878a0;
+    --faint: rgba(255,255,255,0.04);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  .cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+    opacity: 0.5;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 5vw;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--text); font-weight: 300; font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--ink) !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 50px;
+    font-weight: 600 !important;
+    color: #0a0a0f !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--ink) !important; }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 5vw 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,165,90,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(90,127,245,0.06) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,165,90,0.3);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    font-family: 'Space Mono', monospace;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+  }
+  .hero-badge::before { content: '◆'; font-size: 0.5rem; }
+  .hero-h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.1s ease forwards;
+    opacity: 0;
+  }
+  .hero-h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    animation: fadeUp 0.8s 0.2s ease forwards;
+    opacity: 0;
+  }
+  .hero-buttons {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease forwards;
+    opacity: 0;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--ink);
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,165,90,0.3); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+  .hero-stats {
+    display: flex; gap: 4rem; justify-content: center; margin-top: 5rem;
+    animation: fadeUp 0.8s 0.4s ease forwards;
+    opacity: 0;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; margin-top: 0.3rem; }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 7rem 5vw; position: relative; z-index: 2; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gold); width: 40px; min-width: 40px; opacity: 0.4; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-desc { color: var(--muted); font-size: 1.05rem; max-width: 560px; line-height: 1.7; font-weight: 300; }
+
+  /* ─── SERVICES ─── */
+  #services { background: var(--ink-light); }
+  .services-header { margin-bottom: 4rem; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .service-card {
+    background: var(--card);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+  .service-card:hover { background: var(--ink-mid); }
+  .service-card:hover::before { transform: translateX(0); }
+  .service-icon {
+    width: 48px; height: 48px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,165,90,0.2);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+  .service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .service-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+  .service-card ul { margin-top: 1rem; list-style: none; }
+  .service-card ul li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 0.2rem 0;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .service-card ul li::before { content: '→'; color: var(--gold); font-size: 0.75rem; }
+
+  /* ─── PRICING ─── */
+  #pricing { background: var(--ink); }
+  .pricing-header { margin-bottom: 4rem; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .pricing-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+  }
+  .pricing-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+  .pricing-card.featured {
+    border-color: rgba(201,165,90,0.4);
+    background: linear-gradient(135deg, #1a1a2e, #161625);
+  }
+  .pricing-card.featured::after {
+    content: '';
+    position: absolute; inset: -1px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(201,165,90,0.3), transparent 50%, rgba(90,127,245,0.1));
+    z-index: -1;
+  }
+  .plan-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    background: var(--faint);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .plan-badge.hot {
+    background: var(--gold-dim);
+    color: var(--gold);
+    border-color: rgba(201,165,90,0.3);
+  }
+  .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+    color: var(--text);
+  }
+  .plan-price sup { font-size: 1.2rem; vertical-align: super; font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--gold); }
+  .plan-price sub { font-size: 0.9rem; font-family: 'DM Sans', sans-serif; font-weight: 400; color: var(--muted); }
+  .plan-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .plan-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin-bottom: 2rem; }
+  .plan-divider { height: 1px; background: var(--border); margin-bottom: 1.8rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .plan-features li:last-child { border-bottom: none; }
+  .check { color: var(--gold); font-size: 0.7rem; margin-top: 0.2rem; flex-shrink: 0; }
+  .plan-btn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .plan-btn.gold { background: var(--gold); color: var(--ink); }
+  .plan-btn.gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,165,90,0.35); }
+  .plan-btn.outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .plan-btn.outline:hover { border-color: var(--gold); color: var(--gold); }
+  .popular-tag {
+    position: absolute; top: -1px; right: 2rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 0 0 8px 8px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ─── CONSULTATION ─── */
+  #consult {
+    background: var(--ink-light);
+  }
+  .consult-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .consult-types {
+    display: flex; flex-direction: column; gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .consult-type {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .consult-type::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+    transform-origin: bottom;
+  }
+  .consult-type:hover { border-color: rgba(201,165,90,0.25); transform: translateX(4px); }
+  .consult-type:hover::before { transform: scaleY(1); }
+  .consult-type-icon {
+    width: 42px; height: 42px; flex-shrink: 0;
+    background: var(--gold-dim);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .consult-type h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .consult-type p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+
+  /* ─── BOOKING FORM ─── */
+  .booking-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    position: sticky; top: 7rem;
+  }
+  .booking-panel h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .booking-panel p { font-size: 0.875rem; color: var(--muted); margin-bottom: 2rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--ink-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: rgba(201,165,90,0.5);
+    box-shadow: 0 0 0 3px rgba(201,165,90,0.08);
+  }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-group select option { background: var(--ink-mid); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 0.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,165,90,0.3); }
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid var(--border);
+    padding: 3rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative; z-index: 2;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+  }
+  .footer-logo span { color: var(--muted); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── FLOATING ORBS ─── */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-1 { width: 400px; height: 400px; background: rgba(201,165,90,0.06); top: 10%; left: -10%; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(90,127,245,0.05); bottom: 10%; right: -5%; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 4vw; }
+    .nav-links { display: none; }
+    .consult-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .booking-panel { position: static; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span>Webi</span><span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#consult">Consultation</a></li>
+    <li><a href="#consult" class="nav-cta">Book Meeting →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-badge">Strategic Growth Partner</div>
+  <h1 class="hero-h1">Elevate Your<br><em>Business</em> to<br>New Heights</h1>
+  <p class="hero-sub">We craft bespoke growth strategies, digital transformation roadmaps, and marketing engines for ambitious brands ready to lead.</p>
+  <div class="hero-buttons">
+    <a href="#pricing" class="btn-primary">View Plans ↓</a>
+    <a href="#consult" class="btn-ghost">Book Free Call →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">200+</div>
+      <div class="hero-stat-label">Clients Served</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">₹12Cr+</div>
+      <div class="hero-stat-label">Revenue Generated</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">98%</div>
+      <div class="hero-stat-label">Retention Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Expert Services<br>Built for <em>Results</em></h2>
+    <p class="section-desc">Every engagement is designed around your goals — not templates. We bring deep expertise across strategy, digital, and growth.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">📈</div>
+      <h3>Growth Strategy</h3>
+      <p>Data-driven plans that unlock new revenue streams and scale your brand systematically.</p>
+      <ul>
+        <li>Market opportunity mapping</li>
+        <li>Revenue model design</li>
+        <li>Competitive positioning</li>
+        <li>Quarterly growth OKRs</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎯</div>
+      <h3>Digital Marketing</h3>
+      <p>Full-funnel marketing systems — from acquisition to retention — engineered for ROI.</p>
+      <ul>
+        <li>Performance ads (Meta, Google)</li>
+        <li>SEO & content strategy</li>
+        <li>Email automation flows</li>
+        <li>Analytics & attribution</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏗️</div>
+      <h3>Brand Architecture</h3>
+      <p>Build a brand identity that resonates deeply with your target audience and commands premium.</p>
+      <ul>
+        <li>Brand positioning & voice</li>
+        <li>Visual identity systems</li>
+        <li>Messaging frameworks</li>
+        <li>Brand guidelines doc</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💡</div>
+      <h3>Business Consulting</h3>
+      <p>Strategic advisory for founders and leadership teams navigating growth, pivots, or scale.</p>
+      <ul>
+        <li>Business model audit</li>
+        <li>Hiring & org design</li>
+        <li>Go-to-market planning</li>
+        <li>Investor readiness</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Tech & Automation</h3>
+      <p>Streamline operations with smart automation and the right tool stack for your team.</p>
+      <ul>
+        <li>CRM setup & optimization</li>
+        <li>Workflow automation</li>
+        <li>Data pipelines & dashboards</li>
+        <li>SaaS stack consulting</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🌐</div>
+      <h3>Web & Conversion</h3>
+      <p>High-converting landing pages and digital experiences that turn visitors into customers.</p>
+      <ul>
+        <li>Landing page design</li>
+        <li>CRO audits & testing</li>
+        <li>UX & user journey mapping</li>
+        <li>Speed & performance fixes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-header reveal" style="text-align:center; margin-bottom: 4rem;">
+    <div class="section-label" style="justify-content:center;">Investment Plans</div>
+    <h2 class="section-title" style="font-size: clamp(2rem, 4vw, 3rem);">Simple, <em>Transparent</em> Pricing</h2>
+    <p class="section-desc" style="margin: 0 auto; text-align:center;">No hidden fees. No bloated retainers. Pick the plan that matches where you are and where you want to go.</p>
+  </div>
+  <div class="pricing-grid reveal">
+
+    <!-- Plan 1: Starter -->
+    <div class="pricing-card">
+      <span class="plan-badge">Starter</span>
+      <div class="plan-price"><sup>₹</sup>7,000<sub>/mo</sub></div>
+      <div class="plan-name">Foundation Plan</div>
+      <div class="plan-desc">Perfect for early-stage businesses and solopreneurs ready to build a strong foundation.</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li><span class="check">◆</span> 1 Core Service (choose any)</li>
+        <li><span class="check">◆</span> Monthly strategy session (60 min)</li>
+        <li><span class="check">◆</span> Growth audit & action plan</li>
+        <li><span class="check">◆</span> Basic brand & positioning review</li>
+        <li><span class="check">◆</span> Email & WhatsApp support</li>
+        <li><span class="check">◆</span> Monthly performance report</li>
+      </ul>
+      <button class="plan-btn outline" onclick="scrollToConsult('Foundation Plan — ₹7,000/mo')">Get Started →</button>
+    </div>
+
+    <!-- Plan 2: Growth (Featured) -->
+    <div class="pricing-card featured">
+      <div class="popular-tag">MOST POPULAR</div>
+      <span class="plan-badge hot">Growth</span>
+      <div class="plan-price"><sup>₹</sup>15,000<sub>/mo</sub></div>
+      <div class="plan-name">Accelerator Plan</div>
+      <div class="plan-desc">Built for businesses ready to scale. Full-service support with dedicated strategy & execution.</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li><span class="check">◆</span> 3 Core Services (your choice)</li>
+        <li><span class="check">◆</span> Bi-weekly strategy calls (90 min)</li>
+        <li><span class="check">◆</span> Full funnel marketing setup</li>
+        <li><span class="check">◆</span> Brand identity refinement</li>
+        <li><span class="check">◆</span> Ad campaign management (up to ₹50K spend)</li>
+        <li><span class="check">◆</span> Competitor analysis & positioning</li>
+        <li><span class="check">◆</span> Priority support (same-day response)</li>
+        <li><span class="check">◆</span> Detailed weekly reporting</li>
+      </ul>
+      <button class="plan-btn gold" onclick="scrollToConsult('Accelerator Plan — ₹15,000/mo')">Start Scaling →</button>
+    </div>
+
+    <!-- Plan 3: Custom -->
+    <div class="pricing-card">
+      <span class="plan-badge">Enterprise</span>
+      <div class="plan-price" style="font-size: 2.2rem; padding-top: 0.3rem;">Custom</div>
+      <div class="plan-name" style="margin-top: 0.5rem;">White-Glove Plan</div>
+      <div class="plan-desc">For established brands, funded startups, and businesses needing a true strategic partner embedded in their team.</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li><span class="check">◆</span> All services, unlimited scope</li>
+        <li><span class="check">◆</span> Dedicated consultant + team</li>
+        <li><span class="check">◆</span> Weekly C-suite advisory sessions</li>
+        <li><span class="check">◆</span> Custom KPI & OKR framework</li>
+        <li><span class="check">◆</span> Full marketing execution (no spend cap)</li>
+        <li><span class="check">◆</span> Custom tech stack & automation</li>
+        <li><span class="check">◆</span> Board-ready reporting & decks</li>
+        <li><span class="check">◆</span> 24/7 direct access to senior team</li>
+      </ul>
+      <button class="plan-btn outline" onclick="scrollToConsult('Custom / White-Glove Plan')">Let's Talk →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONSULTATION + BOOKING -->
+<section id="consult">
+  <div class="consult-inner">
+    <div>
+      <div class="section-label reveal">Special Consultation</div>
+      <h2 class="section-title reveal">Personalised<br><em>Expert</em> Advice<br>Just for You</h2>
+      <p class="section-desc reveal">Not all businesses are the same. Our consultation sessions are crafted around your specific context, challenges, and ambitions — not generic advice.</p>
+
+      <div class="consult-types">
+        <div class="consult-type reveal">
+          <div class="consult-type-icon">🎯</div>
+          <div>
+            <h4>Personal Brand Consultation</h4>
+            <p>For founders, coaches & creators. Build your personal brand, content strategy, and audience growth engine from scratch.</p>
+          </div>
+        </div>
+        <div class="consult-type reveal">
+          <div class="consult-type-icon">🚀</div>
+          <div>
+            <h4>Startup Growth Sprint</h4>
+            <p>Focused 90-min deep dive to identify your biggest bottleneck and build a 30-day execution plan to break through it.</p>
+          </div>
+        </div>
+        <div class="consult-type reveal">
+          <div class="consult-type-icon">🏢</div>
+          <div>
+            <h4>SME Transformation Session</h4>
+            <p>Strategic consultation for established businesses looking to modernise, digitise, and unlock the next phase of growth.</p>
+          </div>
+        </div>
+        <div class="consult-type reveal">
+          <div class="consult-type-icon">💼</div>
+          <div>
+            <h4>Investor & Pitch Readiness</h4>
+            <p>Get your business model, narrative, and pitch deck investor-ready with expert feedback and positioning refinement.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOKING FORM -->
+    <div class="booking-panel reveal">
+      <h3>Book Your Meeting</h3>
+      <p>Fill in your details and we'll confirm your slot within 24 hours. First call is always free.</p>
+      <div id="bookingForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="Arjun" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Sharma" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="arjun@company.in" />
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp</label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" />
+        </div>
+        <div class="form-group">
+          <label>Consultation Type</label>
+          <select id="consultType">
+            <option value="">Select consultation type...</option>
+            <option>Personal Brand Consultation</option>
+            <option>Startup Growth Sprint</option>
+            <option>SME Transformation Session</option>
+            <option>Investor & Pitch Readiness</option>
+            <option>General Business Strategy</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Your Plan Interest</label>
+          <select id="planInterest">
+            <option value="">Select a plan...</option>
+            <option>Foundation Plan — ₹7,000/mo</option>
+            <option>Accelerator Plan — ₹15,000/mo</option>
+            <option>Custom / White-Glove Plan</option>
+            <option>Just exploring options</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preferred Meeting Date</label>
+          <input type="date" id="meetDate" />
+        </div>
+        <div class="form-group">
+          <label>Tell us about your challenge</label>
+          <textarea id="message" placeholder="What's your biggest business challenge right now? (Optional but helps us prepare)"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitBooking()">
+          Confirm Booking ✦
+        </button>
+      </div>
+      <div class="success-msg" id="successMsg">
+        ✦ Meeting Booked!<br>
+        <span style="font-family:'DM Sans',sans-serif; font-size:0.9rem; color: var(--muted); font-style:normal;">We'll reach out within 24 hours to confirm your slot.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Apex<span>Consult</span></div>
+  <p>© 2025 ApexConsult. All rights reserved.</p>
+  <p style="color: var(--gold); font-family: 'Space Mono', monospace; font-size: 0.75rem;">hello@apexconsult.in</p>
+</footer>
+
+<script>
+  // ─── Cursor ───
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a, button, .consult-type, .service-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%, -50%) scale(1.6)'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%, -50%) scale(1)'; ring.style.opacity = '0.5'; });
+  });
+
+  // ─── Reveal on scroll ───
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // ─── Scroll to consult with plan pre-fill ───
+  function scrollToConsult(plan) {
+    document.getElementById('planInterest').value = plan;
+    document.getElementById('consult').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ─── Submit Booking ───
+  function submitBooking() {
+    const name = document.getElementById('fname').value;
+    const email = document.getElementById('email').value;
+    if (!name || !email) {
+      alert('Please fill in at least your name and email.');
+      return;
+    }
+    document.getElementById('bookingForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  }
+
+  // ─── Set min date to today ───
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('meetDate').min = today;
+</script>
+</body>
+</html>

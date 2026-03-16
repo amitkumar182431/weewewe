@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apex Consult — Branding, Posters & Logo Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --ink-light: #14141e;
+    --ink-mid: #1e1e2e;
+    --surface: #111120;
+    --card: #161625;
+    --border: rgba(255,255,255,0.07);
+    --gold: #c9a55a;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,165,90,0.15);
+    --accent: #5a7ff5;
+    --accent-glow: rgba(90,127,245,0.25);
+    --text: #e8e8f0;
+    --muted: #7878a0;
+    --faint: rgba(255,255,255,0.04);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  .cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; pointer-events: none;
+    z-index: 9999; transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; pointer-events: none;
+    z-index: 9998; transform: translate(-50%, -50%);
+    transition: all 0.18s ease; opacity: 0.5;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025; pointer-events: none; z-index: 1;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 5vw;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--gold);
+    letter-spacing: 0.04em; text-decoration: none;
+  }
+  .nav-logo span { color: var(--text); font-weight: 300; font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--ink) !important;
+    padding: 0.55rem 1.4rem; border-radius: 50px; font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--ink) !important; }
+
+  /* ─── PAGE HERO ─── */
+  #page-hero {
+    min-height: 65vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 9rem 5vw 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,165,90,0.09) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 20% 90%, rgba(90,127,245,0.06) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold-dim); border: 1px solid rgba(201,165,90,0.3);
+    border-radius: 50px; padding: 0.4rem 1rem;
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    font-family: 'Space Mono', monospace;
+    animation: fadeUp 0.8s ease forwards; opacity: 0;
+  }
+  .hero-badge::before { content: '◆'; font-size: 0.5rem; }
+  .page-h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 900; line-height: 1.04; letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.1s ease forwards; opacity: 0;
+  }
+  .page-h1 em { font-style: italic; color: var(--gold); }
+  .page-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted);
+    max-width: 620px; line-height: 1.7; margin-bottom: 3rem;
+    font-weight: 300;
+    animation: fadeUp 0.8s 0.2s ease forwards; opacity: 0;
+  }
+  .hero-pills {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.3s ease forwards; opacity: 0;
+  }
+  .hero-pill {
+    background: var(--faint); border: 1px solid var(--border);
+    border-radius: 50px; padding: 0.45rem 1.1rem;
+    font-size: 0.8rem; color: var(--muted);
+    font-family: 'Space Mono', monospace; letter-spacing: 0.05em;
+  }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 7rem 5vw; position: relative; z-index: 2; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--gold);
+    width: 40px; min-width: 40px; opacity: 0.4;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700; line-height: 1.1; margin-bottom: 1.2rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-desc { color: var(--muted); font-size: 1.05rem; max-width: 560px; line-height: 1.7; font-weight: 300; }
+
+  /* ─── FLOATING ORBS ─── */
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(80px); pointer-events: none; z-index: 0;
+  }
+  .orb-1 { width: 400px; height: 400px; background: rgba(201,165,90,0.06); top: 10%; left: -10%; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(90,127,245,0.05); bottom: 10%; right: -5%; }
+
+  /* ─── WHAT IS BRANDING ─── */
+  #what { background: var(--ink-light); }
+  .what-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center; max-width: 1100px; margin: 0 auto;
+  }
+  .what-visual {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    overflow: hidden;
+    min-height: 360px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .what-visual::before {
+    content: '';
+    position: absolute; inset: -1px;
+    background: linear-gradient(135deg, rgba(201,165,90,0.2), transparent 50%, rgba(90,127,245,0.08));
+    border-radius: var(--radius); z-index: -1;
+  }
+
+  /* Brand Identity Diagram */
+  .brand-diagram {
+    width: 100%; position: relative;
+  }
+  .brand-center {
+    width: 100px; height: 100px;
+    background: var(--gold-dim);
+    border: 2px solid rgba(201,165,90,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem; color: var(--gold);
+    font-weight: 700; text-align: center; line-height: 1.3;
+    margin: 0 auto 2rem;
+    position: relative;
+    box-shadow: 0 0 40px rgba(201,165,90,0.15);
+  }
+  .brand-spokes {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .brand-spoke {
+    background: var(--ink-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 0.75rem;
+    text-align: center;
+    font-size: 0.72rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    transition: all 0.25s;
+    line-height: 1.4;
+  }
+  .brand-spoke:hover { border-color: rgba(201,165,90,0.4); color: var(--gold); }
+  .brand-spoke .spoke-icon { font-size: 1.2rem; display: block; margin-bottom: 0.4rem; }
+
+  /* ─── SERVICES GRID ─── */
+  #services { background: var(--ink); }
+  .services-trio {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin-top: 3.5rem; max-width: 1200px;
+  }
+  .service-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.35s;
+    position: relative;
+  }
+  .service-block::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .service-block:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.4); border-color: rgba(201,165,90,0.15); }
+  .service-block:hover::before { transform: translateX(0); }
+
+  /* Mock visual inside each card */
+  .service-mock {
+    height: 180px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Logo mock */
+  .mock-logo-bg {
+    background: linear-gradient(135deg, #12122a, #1a1a35);
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.2rem;
+    position: relative; overflow: hidden;
+  }
+  .mock-logo-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(201,165,90,0.12), transparent 60%);
+  }
+  .mock-logo-mark {
+    width: 52px; height: 52px;
+    border: 2px solid var(--gold);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    transform: rotate(45deg);
+  }
+  .mock-logo-mark::after {
+    content: '';
+    width: 24px; height: 24px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: absolute;
+  }
+  .mock-logo-text {
+    display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .mock-logo-wordmark {
+    height: 10px; border-radius: 3px;
+    background: rgba(201,165,90,0.6);
+  }
+  .mock-logo-wordmark:first-child { width: 80px; }
+  .mock-logo-wordmark:last-child { width: 50px; background: rgba(201,165,90,0.3); }
+  .mock-logo-variants {
+    position: absolute; bottom: 10px; right: 10px;
+    display: flex; gap: 0.5rem;
+  }
+  .mock-variant-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1px solid rgba(201,165,90,0.3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mock-variant-dot span {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+
+  /* Branding mock */
+  .mock-brand-bg {
+    background: linear-gradient(135deg, #0f1520, #181830);
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.75rem; padding: 1.2rem;
+    flex-wrap: wrap;
+    position: relative; overflow: hidden;
+  }
+  .mock-brand-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(90,127,245,0.1), transparent 60%);
+  }
+  .mock-swatch {
+    width: 40px; height: 40px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .mock-type-stack {
+    display: flex; flex-direction: column; gap: 0.5rem; flex: 1;
+  }
+  .mock-type-line {
+    height: 8px; border-radius: 4px;
+    background: rgba(201,165,90,0.5);
+  }
+  .mock-type-line:nth-child(2) { width: 80%; background: rgba(255,255,255,0.2); }
+  .mock-type-line:nth-child(3) { width: 60%; background: rgba(255,255,255,0.12); }
+  .mock-brand-card {
+    width: 54px; height: 36px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,165,90,0.3);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.55rem; color: var(--gold);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Poster mock */
+  .mock-poster-bg {
+    background: #0c0c1a;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.75rem; padding: 1rem;
+    position: relative; overflow: hidden;
+  }
+  .mock-poster-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(201,165,90,0.08), transparent 60%);
+  }
+  .mock-poster {
+    width: 56px; height: 80px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .mock-poster:nth-child(2) { transform: scale(1.1); z-index: 2; }
+  .mock-poster-fill {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: 0.4rem;
+  }
+  .mock-poster-stripe {
+    height: 18px; border-radius: 2px; margin-bottom: 3px;
+  }
+  .mock-poster-line {
+    height: 4px; border-radius: 2px; margin-top: 3px;
+    background: rgba(255,255,255,0.15);
+  }
+  .mock-poster-line:last-child { width: 60%; }
+
+  .service-body { padding: 2rem; }
+  .service-cat {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .service-cat::before { content: '◆'; font-size: 0.45rem; }
+  .service-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .service-block p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+  .service-deliverables { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .deliverable-tag {
+    background: var(--faint); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.28rem 0.65rem;
+    font-size: 0.72rem; color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    transition: all 0.2s;
+  }
+  .deliverable-tag:hover { border-color: rgba(201,165,90,0.3); color: var(--gold); }
+
+  /* ─── PILLARS ─── */
+  #pillars { background: var(--ink-light); }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 3.5rem;
+  }
+  .pillar-card {
+    background: var(--card);
+    padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .pillar-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+  .pillar-card:hover { background: var(--ink-mid); }
+  .pillar-card:hover::before { transform: translateX(0); }
+  .pillar-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 900;
+    color: rgba(201,165,90,0.15);
+    line-height: 1; margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .pillar-card:hover .pillar-num { color: rgba(201,165,90,0.3); }
+  .pillar-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .pillar-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .pillar-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+  /* ─── PROCESS TIMELINE ─── */
+  #process { background: var(--ink); }
+  .process-header { margin-bottom: 4rem; text-align: center; }
+  .process-header .section-label { justify-content: center; }
+  .process-timeline {
+    max-width: 900px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 0;
+    position: relative;
+  }
+  .process-timeline::before {
+    content: '';
+    position: absolute; left: 40px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), rgba(201,165,90,0.1));
+  }
+  .process-step {
+    display: flex; gap: 2.5rem; align-items: flex-start;
+    padding: 2rem 0 2rem 0;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .process-step:last-child { padding-bottom: 0; }
+  .step-num {
+    width: 80px; height: 80px; flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 900; color: var(--gold);
+    position: relative; z-index: 1;
+    transition: all 0.3s;
+  }
+  .process-step:hover .step-num {
+    background: var(--gold-dim);
+    border-color: rgba(201,165,90,0.4);
+    box-shadow: 0 0 30px rgba(201,165,90,0.2);
+  }
+  .step-content {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 0.75rem;
+    transition: all 0.3s;
+  }
+  .process-step:hover .step-content {
+    border-color: rgba(201,165,90,0.2);
+    transform: translateX(4px);
+  }
+  .step-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .step-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .step-content p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+  .step-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem;
+  }
+  .step-tag {
+    background: var(--faint); border: 1px solid var(--border);
+    border-radius: 50px; padding: 0.3rem 0.75rem;
+    font-size: 0.75rem; color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ─── DELIVERABLES SHOWCASE ─── */
+  #deliverables { background: var(--ink-light); }
+  .deliverables-header { margin-bottom: 4rem; }
+  .deliverables-masonry {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 1.5rem;
+    max-width: 1100px;
+  }
+  .del-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .del-card:hover { transform: translateY(-5px); border-color: rgba(201,165,90,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+  .del-card.wide { grid-column: span 2; }
+  .del-card.tall { grid-row: span 2; }
+
+  .del-preview {
+    height: 160px; overflow: hidden;
+    position: relative;
+  }
+  .del-card.tall .del-preview { height: 340px; }
+  .del-card.wide .del-preview { height: 160px; }
+
+  /* Preview visuals */
+  .prev-logo-sheet {
+    background: #0e0e1f;
+    width: 100%; height: 100%;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px; background-color: rgba(201,165,90,0.08);
+    position: relative; overflow: hidden;
+  }
+  .prev-logo-cell {
+    background: #0e0e1f;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .prev-logo-sym {
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+  .del-card:hover .prev-logo-sym { opacity: 1; }
+
+  .prev-brand-book {
+    background: linear-gradient(160deg, #0d0d20 0%, #161628 100%);
+    width: 100%; height: 100%;
+    display: flex; gap: 1px; overflow: hidden;
+  }
+  .pbb-left {
+    flex: 0 0 45%; background: var(--gold-dim);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem;
+  }
+  .pbb-swatch-row { display: flex; gap: 0.3rem; }
+  .pbb-swatch { width: 20px; height: 20px; border-radius: 4px; }
+  .pbb-right {
+    flex: 1; padding: 1rem 0.75rem;
+    display: flex; flex-direction: column; gap: 0.5rem; justify-content: center;
+  }
+  .pbb-rule { height: 1px; background: rgba(201,165,90,0.3); }
+  .pbb-line { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.15); }
+  .pbb-line:nth-child(2) { width: 85%; }
+  .pbb-line:nth-child(3) { width: 70%; }
+  .pbb-line:nth-child(4) { width: 50%; }
+  .pbb-font-block { 
+    font-family: 'Playfair Display', serif; 
+    font-size: 2rem; color: rgba(201,165,90,0.4); 
+    font-weight: 900; line-height: 1; 
+    margin-top: 0.5rem; 
+  }
+
+  .prev-poster-grid {
+    background: #080818;
+    width: 100%; height: 100%;
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 4px; padding: 8px;
+  }
+  .ppg-poster {
+    border-radius: 4px; overflow: hidden;
+    position: relative;
+  }
+  .ppg-bg { width: 100%; height: 100%; }
+  .ppg-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end; padding: 4px;
+  }
+  .ppg-line { height: 3px; width: 60%; border-radius: 2px; background: rgba(255,255,255,0.4); }
+
+  .prev-biz-card {
+    background: #0a0a18;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 1rem;
+  }
+  .pbc-card {
+    width: 90px; height: 55px;
+    border-radius: 6px;
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(201,165,90,0.25);
+    transform: rotate(-3deg);
+    transition: transform 0.3s;
+  }
+  .pbc-card:last-child { transform: rotate(3deg); }
+  .del-card:hover .pbc-card { transform: rotate(0deg) scale(1.05); }
+  .pbc-bg { width: 100%; height: 100%; }
+  .pbc-content {
+    position: absolute; inset: 0; padding: 6px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .pbc-mark { width: 14px; height: 14px; border: 1.5px solid var(--gold); transform: rotate(45deg); }
+  .pbc-lines { display: flex; flex-direction: column; gap: 2px; }
+  .pbc-line { height: 3px; border-radius: 2px; background: rgba(201,165,90,0.5); }
+  .pbc-line:last-child { width: 60%; background: rgba(255,255,255,0.2); }
+
+  .prev-social-kit {
+    background: #0c0c20;
+    width: 100%; height: 100%;
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px; padding: 6px;
+    position: relative;
+  }
+  .psk-tile {
+    border-radius: 5px; overflow: hidden;
+    position: relative;
+  }
+  .psk-tile:first-child { grid-column: span 2; }
+  .psk-bg { width: 100%; height: 100%; }
+  .psk-label {
+    position: absolute; bottom: 4px; left: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.42rem; color: rgba(201,165,90,0.7);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .prev-style-guide {
+    background: #0e0e22;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; padding: 1rem; gap: 0.75rem;
+  }
+  .psg-row { display: flex; gap: 0.75rem; align-items: center; }
+  .psg-label {
+    font-family: 'Space Mono', monospace; font-size: 0.58rem;
+    color: var(--muted); width: 60px; flex-shrink: 0;
+  }
+  .psg-swatches { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  .psg-swatch { width: 18px; height: 18px; border-radius: 4px; }
+  .psg-fonts { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
+  .psg-font { height: 7px; border-radius: 3px; background: rgba(255,255,255,0.18); }
+  .psg-font:first-child { background: rgba(201,165,90,0.5); }
+  .psg-icons { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .psg-icon { 
+    width: 18px; height: 18px; border-radius: 3px; 
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.55rem;
+  }
+
+  .del-body { padding: 1.5rem; }
+  .del-cat {
+    font-family: 'Space Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.5rem;
+  }
+  .del-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem;
+  }
+  .del-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+
+  /* ─── OUTCOMES ─── */
+  #outcomes { background: var(--ink); }
+  .outcomes-header { margin-bottom: 4rem; text-align: center; }
+  .outcomes-header .section-label { justify-content: center; }
+  .outcomes-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; max-width: 1000px; margin: 0 auto;
+  }
+  .outcome-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .outcome-card::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(201,165,90,0.1), transparent);
+    opacity: 0; transition: opacity 0.3s; z-index: -1;
+  }
+  .outcome-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+  .outcome-card:hover::before { opacity: 1; }
+  .outcome-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem; font-weight: 900; color: var(--gold);
+    line-height: 1; margin-bottom: 0.5rem;
+  }
+  .outcome-num sup { font-size: 1.5rem; vertical-align: super; }
+  .outcome-label { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .outcome-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* ─── TOOLS / STACK ─── */
+  #stack { background: var(--ink-light); }
+  .stack-header { margin-bottom: 4rem; }
+  .tools-categories {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    max-width: 1100px;
+  }
+  .tool-category {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .tool-category::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tool-category:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+  .tool-category:hover::after { opacity: 1; }
+  .tool-cat-icon {
+    width: 48px; height: 48px;
+    background: var(--gold-dim); border: 1px solid rgba(201,165,90,0.2);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1.2rem;
+  }
+  .tool-category h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem;
+  }
+  .tool-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tool-chip {
+    background: var(--ink-mid); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.3rem 0.7rem;
+    font-size: 0.78rem; color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    transition: all 0.2s;
+  }
+  .tool-chip:hover { border-color: rgba(201,165,90,0.3); color: var(--gold); }
+
+  /* ─── CASE STUDIES ─── */
+  #cases { background: var(--ink); }
+  .cases-header { margin-bottom: 3rem; }
+  .cases-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .case-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  .case-card:hover { transform: translateY(-5px); border-color: rgba(201,165,90,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+  .case-industry {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .case-industry::before { content: '◆'; font-size: 0.45rem; }
+  .case-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .case-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+  .case-metrics { display: flex; gap: 1.5rem; }
+  .case-metric-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .case-metric-key { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ─── CTA BANNER ─── */
+  #cta-banner { background: var(--ink-light); padding: 7rem 5vw; }
+  .cta-inner {
+    max-width: 900px; margin: 0 auto; text-align: center;
+    background: var(--card);
+    border: 1px solid rgba(201,165,90,0.2);
+    border-radius: var(--radius);
+    padding: 4rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .cta-inner::before {
+    content: '';
+    position: absolute; inset: -1px;
+    background: linear-gradient(135deg, rgba(201,165,90,0.15), transparent 50%, rgba(90,127,245,0.08));
+    border-radius: var(--radius); z-index: -1;
+  }
+  .cta-inner::after {
+    content: '';
+    position: absolute; bottom: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: rgba(201,165,90,0.04);
+    border-radius: 50%; filter: blur(60px);
+  }
+  .cta-inner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900; margin-bottom: 1rem;
+  }
+  .cta-inner h2 em { font-style: italic; color: var(--gold); }
+  .cta-inner p { color: var(--muted); font-size: 1.05rem; max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    background: var(--gold); color: var(--ink);
+    padding: 0.9rem 2.2rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem; letter-spacing: 0.03em;
+    border: none; cursor: pointer; text-decoration: none;
+    transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,165,90,0.3); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    padding: 0.9rem 2.2rem; border-radius: 50px;
+    font-weight: 500; font-size: 0.95rem;
+    border: 1px solid var(--border); cursor: pointer;
+    text-decoration: none; transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink); border-top: 1px solid var(--border);
+    padding: 3rem 5vw;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem; position: relative; z-index: 2;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); }
+  .footer-logo span { color: var(--muted); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .tools-categories { grid-template-columns: 1fr 1fr; }
+    .outcomes-grid { grid-template-columns: 1fr 1fr; }
+    .cases-grid { grid-template-columns: 1fr; }
+    .what-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .services-trio { grid-template-columns: 1fr; }
+    .deliverables-masonry { grid-template-columns: 1fr 1fr; }
+    .del-card.wide { grid-column: span 2; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 4vw; }
+    .nav-links { display: none; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .tools-categories { grid-template-columns: 1fr; }
+    .outcomes-grid { grid-template-columns: 1fr; }
+    .process-timeline::before { left: 28px; }
+    .step-num { width: 56px; height: 56px; font-size: 1rem; }
+    .deliverables-masonry { grid-template-columns: 1fr; }
+    .del-card.wide { grid-column: span 1; }
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Webi<span>Kit</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="#process">Our Process</a></li>
+    <li><a href="#deliverables">Deliverables</a></li>
+    <li><a href="#cases">Case Studies</a></li>
+    <li><a href="index.html#consult" class="nav-cta">Book Meeting →</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section id="page-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-badge">Service Deep Dive</div>
+  <h1 class="page-h1">Branding &amp; Design<br>That <em>Commands</em> Attention</h1>
+  <p class="page-sub">We build identities that don't just look good — they communicate authority, build trust instantly, and make your brand impossible to forget.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">Logo Design</span>
+    <span class="hero-pill">Brand Identity</span>
+    <span class="hero-pill">Poster Design</span>
+    <span class="hero-pill">Brand Guidelines</span>
+    <span class="hero-pill">Visual Systems</span>
+    <span class="hero-pill">Collateral</span>
+  </div>
+</section>
+
+<!-- WHAT IS BRANDING -->
+<section id="what">
+  <div class="what-inner">
+    <div class="reveal">
+      <div class="section-label">The Foundation</div>
+      <h2 class="section-title">A Logo Isn't a<br><em>Brand</em>. This Is.</h2>
+      <p class="section-desc">A logo is a symbol. A brand is a feeling — the sum of every visual, verbal, and emotional impression your audience carries. We build the entire system, not just the mark.</p>
+      <br>
+      <p class="section-desc" style="margin-top:1rem;">From the curvature of a letterform to the precise hex value of your brand colour, every decision is intentional, strategic, and built to scale across every surface your business touches.</p>
+    </div>
+    <div class="reveal">
+      <div class="what-visual">
+        <div class="brand-diagram">
+          <div class="brand-center">BRAND<br>IDENTITY</div>
+          <div class="brand-spokes">
+            <div class="brand-spoke"><span class="spoke-icon">🔤</span>Typography</div>
+            <div class="brand-spoke"><span class="spoke-icon">🎨</span>Colour System</div>
+            <div class="brand-spoke"><span class="spoke-icon">✦</span>Logo Mark</div>
+            <div class="brand-spoke"><span class="spoke-icon">📐</span>Grid &amp; Layout</div>
+            <div class="brand-spoke"><span class="spoke-icon">🗣️</span>Tone of Voice</div>
+            <div class="brand-spoke"><span class="spoke-icon">📸</span>Photography</div>
+            <div class="brand-spoke"><span class="spoke-icon">📄</span>Stationery</div>
+            <div class="brand-spoke"><span class="spoke-icon">📱</span>Digital Assets</div>
+            <div class="brand-spoke"><span class="spoke-icon">🖼️</span>Posters &amp; OOH</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="section-label">What We Create</div>
+    <h2 class="section-title">Three <em>Disciplines</em>,<br>One Unified Vision</h2>
+    <p class="section-desc">Whether you're building from scratch or refreshing an existing identity, we cover the full spectrum of visual brand creation.</p>
+  </div>
+  <div class="services-trio reveal">
+
+    <!-- Logo Design -->
+    <div class="service-block">
+      <div class="service-mock">
+        <div class="mock-logo-bg">
+          <div class="mock-logo-mark"></div>
+          <div class="mock-logo-text">
+            <div class="mock-logo-wordmark"></div>
+            <div class="mock-logo-wordmark"></div>
+          </div>
+          <div class="mock-logo-variants">
+            <div class="mock-variant-dot"><span style="background:#c9a55a;"></span></div>
+            <div class="mock-variant-dot"><span style="background:#ffffff;"></span></div>
+            <div class="mock-variant-dot"><span style="background:#0a0a0f;"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="service-body">
+        <div class="service-cat">Logo Design</div>
+        <h3>The Mark That Defines You</h3>
+        <p>Custom logo design from concept to final file. We develop multiple directions, refine with precision, and deliver every format your brand will ever need.</p>
+        <div class="service-deliverables">
+          <span class="deliverable-tag">Wordmark</span>
+          <span class="deliverable-tag">Lettermark</span>
+          <span class="deliverable-tag">Symbol / Icon</span>
+          <span class="deliverable-tag">Combination Mark</span>
+          <span class="deliverable-tag">All colour variants</span>
+          <span class="deliverable-tag">SVG · EPS · PNG · PDF</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Identity -->
+    <div class="service-block">
+      <div class="service-mock">
+        <div class="mock-brand-bg">
+          <div class="pbb-swatch-row" style="position:relative;z-index:1;">
+            <div class="mock-swatch" style="background:#c9a55a;"></div>
+            <div class="mock-swatch" style="background:#0a0a0f;"></div>
+            <div class="mock-swatch" style="background:#e8e8f0;"></div>
+            <div class="mock-swatch" style="background:#5a7ff5;"></div>
+          </div>
+          <div class="mock-type-stack" style="position:relative;z-index:1;">
+            <div class="mock-type-line"></div>
+            <div class="mock-type-line"></div>
+            <div class="mock-type-line"></div>
+          </div>
+          <div class="mock-brand-card" style="position:relative;z-index:1;">BG</div>
+        </div>
+      </div>
+      <div class="service-body">
+        <div class="service-cat">Brand Identity</div>
+        <h3>The Full Visual System</h3>
+        <p>A complete identity system: colour palette, typography hierarchy, iconography, layout principles, photography direction, and a brand guidelines document your whole team can use.</p>
+        <div class="service-deliverables">
+          <span class="deliverable-tag">Colour Palette</span>
+          <span class="deliverable-tag">Font System</span>
+          <span class="deliverable-tag">Brand Guidelines PDF</span>
+          <span class="deliverable-tag">Icon Library</span>
+          <span class="deliverable-tag">Pattern / Texture</span>
+          <span class="deliverable-tag">Motion Principles</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Poster Design -->
+    <div class="service-block">
+      <div class="service-mock">
+        <div class="mock-poster-bg">
+          <div class="mock-poster" style="z-index:1;">
+            <div class="mock-poster-fill">
+              <div class="mock-poster-stripe" style="background: linear-gradient(135deg,#c9a55a,#5a7ff5);"></div>
+              <div class="mock-poster-line"></div>
+              <div class="mock-poster-line"></div>
+            </div>
+          </div>
+          <div class="mock-poster" style="z-index:3;">
+            <div class="mock-poster-fill">
+              <div class="mock-poster-stripe" style="background: linear-gradient(135deg,#0d0d20,#c9a55a99);height:60%;"></div>
+              <div class="mock-poster-line" style="margin-top:6px;"></div>
+              <div class="mock-poster-line"></div>
+            </div>
+          </div>
+          <div class="mock-poster" style="z-index:1;">
+            <div class="mock-poster-fill">
+              <div class="mock-poster-stripe" style="background: linear-gradient(135deg,#1a1a35,#c9a55a44);"></div>
+              <div class="mock-poster-line"></div>
+              <div class="mock-poster-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-body">
+        <div class="service-cat">Poster & Print Design</div>
+        <h3>Print &amp; Digital That Stops Scrolls</h3>
+        <p>From event posters and campaign creatives to outdoor hoardings and in-store displays — designed to communicate fast and leave a lasting impression.</p>
+        <div class="service-deliverables">
+          <span class="deliverable-tag">Event Posters</span>
+          <span class="deliverable-tag">Campaign Creatives</span>
+          <span class="deliverable-tag">Social Templates</span>
+          <span class="deliverable-tag">Hoarding / OOH</span>
+          <span class="deliverable-tag">Flyers &amp; Brochures</span>
+          <span class="deliverable-tag">Print-ready files</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOUR PILLARS -->
+<section id="pillars">
+  <div class="reveal">
+    <div class="section-label">Our Design Philosophy</div>
+    <h2 class="section-title">Four Principles of<br><em>Iconic</em> Brand Design</h2>
+    <p class="section-desc">Great brands aren't made by accident. They're built on these four non-negotiable principles that our studio has refined across 80+ identity projects.</p>
+  </div>
+  <div class="pillars-grid reveal">
+    <div class="pillar-card">
+      <div class="pillar-num">01</div>
+      <div class="pillar-icon">🔍</div>
+      <h3>Strategy Before Aesthetics</h3>
+      <p>We research your market, competitors, and audience deeply before touching a single pixel. Beauty without strategy is decoration.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">02</div>
+      <div class="pillar-icon">⚡</div>
+      <h3>Distinctiveness Over Trends</h3>
+      <p>Trends fade. A distinctive identity built on timeless principles lasts decades. We design for longevity, not the mood board of the moment.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">03</div>
+      <div class="pillar-icon">📐</div>
+      <h3>Systems Thinking</h3>
+      <p>A logo is one element in a visual system. Every component must work in harmony — and flex across every medium from a favicon to a billboard.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">04</div>
+      <div class="pillar-icon">🎯</div>
+      <h3>Emotion-Led Communication</h3>
+      <p>People don't buy rationally — they buy emotionally. We engineer every visual decision to trigger the exact feeling your brand needs to own.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header reveal">
+    <div class="section-label">How We Work</div>
+    <h2 class="section-title">Our <em>Five-Phase</em><br>Brand Design Process</h2>
+    <p class="section-desc" style="margin: 0 auto; text-align: center;">Structured, collaborative, and transparent — from your first brief to final brand handover.</p>
+  </div>
+  <div class="process-timeline">
+    <div class="process-step reveal">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-label">Week 1</div>
+        <h3>Brand Discovery &amp; Positioning</h3>
+        <p>An immersive workshop to uncover your business vision, target audience, competitive landscape, and brand personality. We define what your brand must say — before we show how it should look.</p>
+        <div class="step-tags">
+          <span class="step-tag">Brand questionnaire</span>
+          <span class="step-tag">Competitor visual audit</span>
+          <span class="step-tag">Audience profiling</span>
+          <span class="step-tag">Positioning statement</span>
+        </div>
+      </div>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-label">Week 1–2</div>
+        <h3>Moodboarding &amp; Direction Setting</h3>
+        <p>We present 2–3 distinct creative directions — visual worlds defined by different aesthetics, tones, and strategic approaches. You select one direction; we go deep on it.</p>
+        <div class="step-tags">
+          <span class="step-tag">Moodboards</span>
+          <span class="step-tag">Art direction</span>
+          <span class="step-tag">Colour exploration</span>
+          <span class="step-tag">Typography shortlist</span>
+        </div>
+      </div>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-label">Week 2–3</div>
+        <h3>Logo &amp; Identity Design</h3>
+        <p>Primary logo concepts are developed and presented. After refinement rounds, the chosen mark is perfected and extended into the full identity system — colour, typography, and supporting elements.</p>
+        <div class="step-tags">
+          <span class="step-tag">Logo concepts (3)</span>
+          <span class="step-tag">2 revision rounds</span>
+          <span class="step-tag">Colour palette</span>
+          <span class="step-tag">Type system</span>
+        </div>
+      </div>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-label">Week 3–4</div>
+        <h3>Collateral &amp; Applications</h3>
+        <p>The identity is applied to all agreed collateral — business cards, letterheads, social media templates, poster layouts, packaging, or any touchpoints specific to your business.</p>
+        <div class="step-tags">
+          <span class="step-tag">Stationery design</span>
+          <span class="step-tag">Social templates</span>
+          <span class="step-tag">Poster layouts</span>
+          <span class="step-tag">Packaging mockups</span>
+        </div>
+      </div>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-label">Week 4</div>
+        <h3>Brand Guidelines &amp; Handover</h3>
+        <p>A comprehensive brand guidelines document is delivered alongside all final files, organised and labelled for your team, agency partners, and printers to use correctly — every time.</p>
+        <div class="step-tags">
+          <span class="step-tag">Brand guidelines PDF</span>
+          <span class="step-tag">All logo files (SVG, EPS, PNG)</span>
+          <span class="step-tag">Font licences</span>
+          <span class="step-tag">Source files (Figma / AI)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES SHOWCASE -->
+<section id="deliverables">
+  <div class="deliverables-header reveal">
+    <div class="section-label">What You Receive</div>
+    <h2 class="section-title">Every <em>Asset</em><br>Your Brand Needs</h2>
+    <p class="section-desc">A complete, professionally organised brand package — ready to deploy the moment you receive it.</p>
+  </div>
+  <div class="deliverables-masonry reveal">
+
+    <!-- Logo Variations -->
+    <div class="del-card">
+      <div class="del-preview">
+        <div class="prev-logo-sheet">
+          <div class="prev-logo-cell">
+            <svg class="prev-logo-sym" width="38" height="38" viewBox="0 0 40 40">
+              <rect x="10" y="10" width="20" height="20" fill="none" stroke="#c9a55a" stroke-width="1.5" transform="rotate(45 20 20)"/>
+              <circle cx="20" cy="20" r="5" fill="#c9a55a" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="prev-logo-cell">
+            <svg class="prev-logo-sym" width="60" height="20" viewBox="0 0 70 22">
+              <text x="2" y="17" font-family="serif" font-size="14" fill="#c9a55a" opacity="0.6" font-weight="bold">BRAND</text>
+            </svg>
+          </div>
+          <div class="prev-logo-cell">
+            <svg class="prev-logo-sym" width="32" height="32" viewBox="0 0 32 32">
+              <polygon points="16,4 28,28 4,28" fill="none" stroke="#c9a55a" stroke-width="1.5" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="prev-logo-cell" style="background:#1a1a30;">
+            <svg class="prev-logo-sym" width="38" height="38" viewBox="0 0 40 40">
+              <rect x="10" y="10" width="20" height="20" fill="none" stroke="#ffffff" stroke-width="1.5" transform="rotate(45 20 20)"/>
+              <circle cx="20" cy="20" r="5" fill="#ffffff" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="prev-logo-cell" style="background:#0a0a0f;">
+            <svg class="prev-logo-sym" width="60" height="20" viewBox="0 0 70 22">
+              <text x="2" y="17" font-family="serif" font-size="14" fill="#e8e8f0" opacity="0.8" font-weight="bold">BRAND</text>
+            </svg>
+          </div>
+          <div class="prev-logo-cell" style="background:#c9a55a;">
+            <svg class="prev-logo-sym" width="32" height="32" viewBox="0 0 32 32">
+              <polygon points="16,4 28,28 4,28" fill="none" stroke="#0a0a0f" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="del-body">
+        <div class="del-cat">Logo System</div>
+        <h3>Full Logo Variations Suite</h3>
+        <p>Primary, secondary, horizontal, stacked — all colour variants across light, dark, and colour backgrounds.</p>
+      </div>
+    </div>
+
+    <!-- Brand Guidelines (wide) -->
+    <div class="del-card wide">
+      <div class="del-preview">
+        <div class="prev-brand-book">
+          <div class="pbb-left">
+            <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:rgba(201,165,90,0.6);font-weight:900;font-style:italic;">Aa</div>
+            <div class="pbb-swatch-row">
+              <div class="pbb-swatch" style="background:#c9a55a;"></div>
+              <div class="pbb-swatch" style="background:#0a0a0f;"></div>
+              <div class="pbb-swatch" style="background:#e8e8f0;"></div>
+            </div>
+            <div class="pbb-swatch-row">
+              <div class="pbb-swatch" style="background:#5a7ff5;"></div>
+              <div class="pbb-swatch" style="background:#2a2a3e;"></div>
+              <div class="pbb-swatch" style="background:#e8c97a;"></div>
+            </div>
+          </div>
+          <div class="pbb-right">
+            <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:rgba(201,165,90,0.35);font-weight:900;">Brand</div>
+            <div class="pbb-rule"></div>
+            <div class="pbb-line"></div>
+            <div class="pbb-line"></div>
+            <div class="pbb-line"></div>
+            <div class="pbb-line"></div>
+            <div class="pbb-rule" style="margin-top:0.3rem;"></div>
+            <div style="display:flex;gap:0.4rem;margin-top:0.4rem;">
+              <div style="width:14px;height:14px;background:rgba(201,165,90,0.2);border-radius:3px;border:1px solid rgba(201,165,90,0.3);"></div>
+              <div style="width:14px;height:14px;background:rgba(255,255,255,0.05);border-radius:3px;border:1px solid rgba(255,255,255,0.08);"></div>
+              <div style="width:14px;height:14px;background:rgba(90,127,245,0.2);border-radius:3px;border:1px solid rgba(90,127,245,0.3);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="del-body">
+        <div class="del-cat">Brand Guidelines</div>
+        <h3>Comprehensive Brand Book</h3>
+        <p>A full-length brand guidelines document covering logo usage rules, colour system, typography hierarchy, photography style, tone of voice, and application examples. Your team's north star for brand consistency.</p>
+      </div>
+    </div>
+
+    <!-- Business Cards -->
+    <div class="del-card">
+      <div class="del-preview">
+        <div class="prev-biz-card">
+          <div class="pbc-card">
+            <div style="background:linear-gradient(135deg,#12122a,#1e1e35);width:100%;height:100%;"></div>
+            <div class="pbc-content">
+              <div class="pbc-mark"></div>
+              <div class="pbc-lines">
+                <div class="pbc-line"></div>
+                <div class="pbc-line"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pbc-card">
+            <div style="background:#c9a55a;width:100%;height:100%;"></div>
+            <div class="pbc-content">
+              <div class="pbc-mark" style="border-color:#0a0a0f;"></div>
+              <div class="pbc-lines">
+                <div class="pbc-line" style="background:rgba(10,10,15,0.5);"></div>
+                <div class="pbc-line" style="background:rgba(10,10,15,0.3);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="del-body">
+        <div class="del-cat">Print Collateral</div>
+        <h3>Business Cards &amp; Stationery</h3>
+        <p>Business cards, letterheads, envelopes, and email signatures — all print-ready with bleed and crop marks.</p>
+      </div>
+    </div>
+
+    <!-- Social Media Kit -->
+    <div class="del-card">
+      <div class="del-preview">
+        <div class="prev-social-kit">
+          <div class="psk-tile">
+            <div class="psk-bg" style="background:linear-gradient(135deg,#12122a,#1e1e35);height:100%;"></div>
+            <div style="position:absolute;inset:0;padding:6px;display:flex;align-items:flex-end;">
+              <div style="height:4px;width:40%;border-radius:2px;background:rgba(201,165,90,0.5);"></div>
+            </div>
+            <div class="psk-label">1080×1080</div>
+          </div>
+          <div class="psk-tile">
+            <div class="psk-bg" style="background:linear-gradient(135deg,#1a1a35,#c9a55a22);height:100%;"></div>
+            <div class="psk-label">Story</div>
+          </div>
+          <div class="psk-tile">
+            <div class="psk-bg" style="background:linear-gradient(135deg,#0e0e1f,#5a7ff522);height:100%;"></div>
+            <div class="psk-label">Banner</div>
+          </div>
+        </div>
+      </div>
+      <div class="del-body">
+        <div class="del-cat">Digital Assets</div>
+        <h3>Social Media Template Kit</h3>
+        <p>Editable Canva or Figma templates for posts, stories, reels covers, and LinkedIn banners — keeping every post on-brand.</p>
+      </div>
+    </div>
+
+    <!-- Style Guide -->
+    <div class="del-card">
+      <div class="del-preview">
+        <div class="prev-style-guide">
+          <div class="psg-row">
+            <div class="psg-label">Colours</div>
+            <div class="psg-swatches">
+              <div class="psg-swatch" style="background:#c9a55a;"></div>
+              <div class="psg-swatch" style="background:#0a0a0f;"></div>
+              <div class="psg-swatch" style="background:#e8e8f0;"></div>
+              <div class="psg-swatch" style="background:#5a7ff5;"></div>
+              <div class="psg-swatch" style="background:#2a2a3e;"></div>
+            </div>
+          </div>
+          <div class="psg-row">
+            <div class="psg-label">Fonts</div>
+            <div class="psg-fonts">
+              <div class="psg-font" style="width:90%;"></div>
+              <div class="psg-font" style="width:70%;"></div>
+              <div class="psg-font" style="width:55%;"></div>
+            </div>
+          </div>
+          <div class="psg-row">
+            <div class="psg-label">Icons</div>
+            <div class="psg-icons">
+              <div class="psg-icon">✦</div>
+              <div class="psg-icon">◆</div>
+              <div class="psg-icon">▲</div>
+              <div class="psg-icon">●</div>
+              <div class="psg-icon">■</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="del-body">
+        <div class="del-cat">Quick Reference</div>
+        <h3>One-Page Style Guide</h3>
+        <p>A concise one-pager summarising all brand tokens: hex codes, font stacks, spacing rules, and icon usage — for fast reference by your team.</p>
+      </div>
+    </div>
+
+    <!-- Posters -->
+    <div class="del-card">
+      <div class="del-preview">
+        <div class="prev-poster-grid">
+          <div class="ppg-poster">
+            <div class="ppg-bg" style="background:linear-gradient(160deg,#0d0d20,#c9a55a44);height:100%;border-radius:4px;"></div>
+            <div class="ppg-overlay"><div class="ppg-line"></div></div>
+          </div>
+          <div class="ppg-poster">
+            <div class="ppg-bg" style="background:linear-gradient(160deg,#c9a55a,#5a7ff5);height:100%;border-radius:4px;"></div>
+            <div class="ppg-overlay"><div class="ppg-line" style="background:rgba(10,10,15,0.5);"></div></div>
+          </div>
+          <div class="ppg-poster">
+            <div class="ppg-bg" style="background:linear-gradient(160deg,#1a1a35,#0d0d20);height:100%;border-radius:4px;"></div>
+            <div class="ppg-overlay"><div class="ppg-line"></div></div>
+          </div>
+          <div class="ppg-poster">
+            <div class="ppg-bg" style="background:#c9a55a22;border:1px solid rgba(201,165,90,0.2);height:100%;border-radius:4px;"></div>
+            <div class="ppg-overlay"><div class="ppg-line" style="background:rgba(201,165,90,0.5);"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="del-body">
+        <div class="del-cat">Poster Design</div>
+        <h3>Campaign &amp; Event Posters</h3>
+        <p>Digital and print poster designs for launches, events, promotions, and campaigns — delivered print-ready at full resolution.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TOOL STACK -->
+<section id="stack">
+  <div class="stack-header reveal">
+    <div class="section-label">Our Design Stack</div>
+    <h2 class="section-title">Software &amp; Tools<br>We <em>Master</em></h2>
+    <p class="section-desc">We work in the industry-standard tools your team already knows — so handover is seamless and files are immediately usable.</p>
+  </div>
+  <div class="tools-categories reveal">
+    <div class="tool-category">
+      <div class="tool-cat-icon">✏️</div>
+      <h3>Design &amp; Illustration</h3>
+      <div class="tool-list">
+        <span class="tool-chip">Adobe Illustrator</span>
+        <span class="tool-chip">Adobe Photoshop</span>
+        <span class="tool-chip">Figma</span>
+        <span class="tool-chip">Adobe InDesign</span>
+        <span class="tool-chip">Affinity Designer</span>
+        <span class="tool-chip">Procreate</span>
+      </div>
+    </div>
+    <div class="tool-category">
+      <div class="tool-cat-icon">🖥️</div>
+      <h3>Motion &amp; Video</h3>
+      <div class="tool-list">
+        <span class="tool-chip">Adobe After Effects</span>
+        <span class="tool-chip">Premiere Pro</span>
+        <span class="tool-chip">CapCut</span>
+        <span class="tool-chip">Lottie</span>
+        <span class="tool-chip">Rive</span>
+        <span class="tool-chip">Spline</span>
+      </div>
+    </div>
+    <div class="tool-category">
+      <div class="tool-cat-icon">📦</div>
+      <h3>Deliverable Formats</h3>
+      <div class="tool-list">
+        <span class="tool-chip">SVG · EPS · PDF</span>
+        <span class="tool-chip">PNG · JPG · WebP</span>
+        <span class="tool-chip">Figma source</span>
+        <span class="tool-chip">Adobe AI source</span>
+        <span class="tool-chip">Canva templates</span>
+        <span class="tool-chip">Brand kit ZIP</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="outcomes-header reveal">
+    <div class="section-label">Proven Impact</div>
+    <h2 class="section-title">Brands We've Built<br><em>Perform</em></h2>
+    <p class="section-desc" style="margin: 0 auto; text-align:center;">Strong branding isn't vanity — it's a business asset. Our clients' numbers prove it.</p>
+  </div>
+  <div class="outcomes-grid reveal">
+    <div class="outcome-card">
+      <div class="outcome-num">80<sup>+</sup></div>
+      <div class="outcome-label">Brand Identities Built</div>
+      <div class="outcome-desc">From first-time founders to established businesses refreshing their visual presence.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">3.2<sup>×</sup></div>
+      <div class="outcome-label">Avg. Trust Score Lift</div>
+      <div class="outcome-desc">Measured improvement in audience trust perception after brand identity refresh, via survey.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">4<sup>wk</sup></div>
+      <div class="outcome-label">Average Delivery Time</div>
+      <div class="outcome-desc">From discovery workshop to full brand handover — without compromising on craft.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">42<sup>%</sup></div>
+      <div class="outcome-label">Higher Conversion Rate</div>
+      <div class="outcome-desc">Average uplift in website conversion rates observed after brand identity and landing page redesign.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">100<sup>%</sup></div>
+      <div class="outcome-label">Source Files Included</div>
+      <div class="outcome-desc">Every project includes full source file handover. Your brand assets belong to you, completely.</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">97<sup>%</sup></div>
+      <div class="outcome-label">Client Satisfaction</div>
+      <div class="outcome-desc">Of clients rate their final brand deliverables as exceeding expectations, based on post-project surveys.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="cases-header reveal">
+    <div class="section-label">Case Studies</div>
+    <h2 class="section-title">Brand Transformations<br>in <em>Action</em></h2>
+    <p class="section-desc">Real businesses. Real briefs. Real before-and-after impact.</p>
+  </div>
+  <div class="cases-grid reveal">
+    <div class="case-card">
+      <div class="case-industry">Luxury F&amp;B — Mumbai</div>
+      <h3>Rebranding a premium café chain to justify 40% price premium</h3>
+      <p>Developed a full identity system — from bespoke wordmark to menu typography and interior brand application — that positioned the brand as a luxury experience, not just a coffee shop.</p>
+      <div class="case-metrics">
+        <div class="case-metric">
+          <div class="case-metric-val">+40%</div>
+          <div class="case-metric-key">Avg. Ticket Size</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-metric-val">3×</div>
+          <div class="case-metric-key">Social Following</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-metric-val">2 wk</div>
+          <div class="case-metric-key">To Launch</div>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-industry">D2C Skincare — Bangalore</div>
+      <h3>Building a premium skincare brand identity from zero to shelf-ready</h3>
+      <p>Created brand name, logo, packaging system, and full visual identity for a clean beauty brand targeting premium Indian consumers — designed to compete with global players.</p>
+      <div class="case-metrics">
+        <div class="case-metric">
+          <div class="case-metric-val">₹0→8L</div>
+          <div class="case-metric-key">Month 1 Revenue</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-metric-val">4 SKUs</div>
+          <div class="case-metric-key">Launch Ready</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-metric-val">Myntra</div>
+          <div class="case-metric-key">Listed In 90 Days</div>
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-industry">EdTech Startup — Pune</div>
+      <h3>Designing a modern, trustworthy identity for a competitive EdTech brand</h3>
+      <p>Replaced a generic logo and inconsistent visual language with a cohesive identity system — including full poster campaign templates for offline marketing in Tier 2 cities.</p>
+      <div class="case-metrics">
+        <div class="case-metric">
+          <div class="case-metric-val">5×</div>
+          <div class="case-metric-key">Brand Recall</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-metric-val">22%</div>
+          <div class="case-metric-key">Higher Enrolments</div>
+        </div>
+        <div class="case-metric">
+          <div class="case-metric-val">4 wk</div>
+          <div class="case-metric-key">Full Delivery</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section id="cta-banner">
+  <div class="cta-inner reveal">
+    <div class="hero-badge" style="margin: 0 auto 2rem; width: fit-content;">Ready to Begin?</div>
+    <h2>Let's Build a Brand<br>Worth <em>Remembering</em></h2>
+    <p>Book a free 30-minute brand consultation. We'll review your current identity and share where you're leaving money — and perception — on the table.</p>
+    <div class="cta-buttons">
+      <a href="index.html#consult" class="btn-primary">Book Free Brand Consultation ✦</a>
+      <a href="index.html#pricing" class="btn-ghost">View Pricing →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Apex<span>Consult</span></div>
+  <p>© 2025 ApexConsult. All rights reserved.</p>
+  <p style="color: var(--gold); font-family: 'Space Mono', monospace; font-size: 0.75rem;">hello@apexconsult.in</p>
+</footer>
+
+<script>
+  // ─── Cursor ───
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a, button, .service-block, .pillar-card, .case-card, .tool-category, .outcome-card, .del-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.transform = 'translate(-50%, -50%) scale(1.6)';
+      ring.style.opacity = '0.8';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.transform = 'translate(-50%, -50%) scale(1)';
+      ring.style.opacity = '0.5';
+    });
+  });
+
+  // ─── Reveal on scroll ───
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

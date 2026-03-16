@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebiKit — Powerful Websites That Grow Your Business</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <style>
+  :root{--ink:#0a0a0f;--ink-light:#14141e;--ink-mid:#1e1e2e;--card:#161625;--border:rgba(255,255,255,0.07);--gold:#c9a55a;--gold-light:#e8c97a;--gold-dim:rgba(201,165,90,0.15);--accent:#5a7ff5;--text:#e8e8f0;--muted:#7878a0;--faint:rgba(255,255,255,0.04);--radius:16px;--radius-sm:10px;}
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--text);overflow-x:hidden;cursor:none;}
+  .cursor-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;}
+  .cursor-ring{width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s;opacity:.5;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1;}
+
+  /* ═══ HEADER ═══ */
+  #header{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:.9rem 5vw;background:rgba(10,10,15,0.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);gap:1rem;}
+  .logo a{text-decoration:none;}
+  .logo-text{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);letter-spacing:.04em;}
+  .logo-text span{color:var(--text);font-style:italic;font-weight:300;}
+  .nav_list_container{display:flex;align-items:center;gap:.7rem;flex:1;justify-content:flex-end;}
+  #list{display:flex;align-items:center;gap:1.8rem;list-style:none;}
+  .list_item a{font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+  .list_item a:hover{color:var(--gold);}
+  .list_btn{font-size:.8rem;font-weight:600;padding:.45rem 1.2rem;border-radius:50px;border:1.5px solid var(--gold);color:var(--gold);cursor:pointer;transition:all .2s;white-space:nowrap;background:transparent;}
+  .list_btn:hover{background:var(--gold);color:var(--ink);}
+  .nav-auth{display:flex;align-items:center;gap:.5rem;}
+  #authBtns{display:flex;align-items:center;gap:.4rem;}
+  .btn-login{font-size:.78rem;font-weight:500;padding:.4rem 1rem;border-radius:50px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .2s;}
+  .btn-login:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-signup{font-size:.78rem;font-weight:600;padding:.4rem 1rem;border-radius:50px;background:var(--gold);color:var(--ink);border:none;cursor:pointer;transition:all .2s;}
+  .btn-signup:hover{background:var(--gold-light);}
+  #loggedInArea{display:none;align-items:center;gap:.5rem;}
+
+  /* ══ WALLET BUTTON in header ══ */
+  .hdr-wallet{position:relative;display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(201,165,90,.2),rgba(201,165,90,.07));border:1.5px solid rgba(201,165,90,.45);border-radius:50px;padding:.38rem .9rem .38rem .5rem;cursor:pointer;transition:all .25s;user-select:none;}
+  .hdr-wallet:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(201,165,90,.2);}
+  .hw-icon{width:28px;height:28px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+  .hw-info{display:flex;flex-direction:column;gap:1px;}
+  .hw-label{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);line-height:1;}
+  .hw-bal{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;color:var(--gold);line-height:1;}
+  .hw-plus{font-family:'Space Mono',monospace;font-size:.58rem;background:var(--gold);color:var(--ink);padding:.15rem .45rem;border-radius:50px;font-weight:700;margin-left:.15rem;flex-shrink:0;}
+
+  /* ══ WALLET DROPDOWN ══ */
+  .wallet-dropdown{position:absolute;top:calc(100% + 12px);right:0;width:310px;background:var(--card);border:1px solid rgba(201,165,90,.22);border-radius:var(--radius);box-shadow:0 24px 60px rgba(0,0,0,.65);opacity:0;pointer-events:none;transform:translateY(-10px) scale(.97);transition:all .22s;z-index:500;}
+  .wallet-dropdown.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
+  .wd-head{background:linear-gradient(135deg,rgba(201,165,90,.18),rgba(201,165,90,.04));padding:1.1rem 1.3rem;border-bottom:1px solid rgba(201,165,90,.1);display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+  .wd-bal-wrap .wd-lbl{font-family:'Space Mono',monospace;font-size:.57rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+  .wd-bal-wrap .wd-amt{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold);line-height:1;}
+  .wd-bal-wrap .wd-sub{font-size:.7rem;color:var(--muted);margin-top:.15rem;}
+  .wd-add-btn{background:var(--gold);color:var(--ink);border:none;padding:.48rem 1rem;border-radius:50px;font-weight:700;font-size:.76rem;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s;}
+  .wd-add-btn:hover{background:var(--gold-light);}
+  .wd-body{padding:.9rem 1.3rem;}
+  .wd-section-label{font-family:'Space Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+  .wd-chips{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.7rem;}
+  .wd-chip{padding:.28rem .65rem;border-radius:50px;font-size:.75rem;font-weight:600;border:1px solid var(--border);background:var(--ink-mid);color:var(--muted);cursor:pointer;transition:all .18s;}
+  .wd-chip:hover,.wd-chip.sel{background:var(--gold-dim);border-color:rgba(201,165,90,.4);color:var(--gold);}
+  .wd-input-row{display:flex;gap:.4rem;margin-bottom:.8rem;}
+  .wd-input-row input{flex:1;background:var(--ink-mid);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.5rem .75rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);outline:none;transition:border-color .2s;}
+  .wd-input-row input:focus{border-color:rgba(201,165,90,.5);}
+  .wd-go-btn{background:var(--gold);color:var(--ink);border:none;padding:.5rem .9rem;border-radius:50px;font-weight:700;font-size:.76rem;cursor:pointer;flex-shrink:0;transition:all .2s;}
+  .wd-go-btn:hover{background:var(--gold-light);}
+  .wd-txns{border-top:1px solid var(--border);padding-top:.7rem;}
+  .wd-txn-item{display:flex;align-items:center;justify-content:space-between;padding:.35rem 0;}
+  .wd-txn-l{display:flex;align-items:center;gap:.45rem;}
+  .wd-txn-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0;}
+  .wd-txn-dot.c{background:rgba(74,222,128,.12);color:#4ade80;}
+  .wd-txn-dot.d{background:rgba(248,113,113,.12);color:#f87171;}
+  .wd-txn-name{font-size:.74rem;color:var(--text);}
+  .wd-txn-date{font-size:.6rem;color:var(--muted);font-family:'Space Mono',monospace;}
+  .wd-txn-amt{font-family:'Playfair Display',serif;font-size:.82rem;font-weight:700;}
+  .wd-txn-amt.c{color:#4ade80;}
+  .wd-txn-amt.d{color:#f87171;}
+  .wd-no-txn{font-size:.76rem;color:var(--muted);padding:.5rem 0;}
+  .wd-full-link{display:block;text-align:center;margin-top:.65rem;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);cursor:pointer;padding:.38rem;border:1px solid rgba(201,165,90,.18);border-radius:var(--radius-sm);background:transparent;width:100%;transition:all .2s;}
+  .wd-full-link:hover{background:var(--gold-dim);}
+
+  /* User chip */
+  .user-chip{display:flex;align-items:center;gap:.4rem;}
+  .user-avatar{width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;}
+  .user-name-text{font-size:.76rem;color:var(--muted);font-family:'Space Mono',monospace;max-width:75px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .btn-logout{font-size:.68rem;padding:.28rem .65rem;border-radius:50px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .2s;}
+  .btn-logout:hover{border-color:#f87171;color:#f87171;}
+
+  /* Hamburger */
+  .hamburger_menu{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+  .bar{width:22px;height:2px;background:var(--muted);border-radius:2px;transition:all .3s;}
+
+  /* ═══ HERO ═══ */
+  .hero{min-height:100vh;display:flex;align-items:center;padding:8rem 5vw 5rem;gap:4rem;position:relative;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,165,90,.08),transparent 70%),radial-gradient(ellipse 40% 40% at 90% 80%,rgba(90,127,245,.06),transparent 60%);}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%);pointer-events:none;}
+  .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
+  .orb-1{width:400px;height:400px;background:rgba(201,165,90,.06);top:5%;left:-10%;}
+  .orb-2{width:300px;height:300px;background:rgba(90,127,245,.05);bottom:10%;right:-5%;}
+  .hero_left{flex:1;position:relative;z-index:2;}
+  .hero_left h3{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5.5vw,5rem);font-weight:900;line-height:1.06;letter-spacing:-.02em;margin-bottom:1.5rem;animation:fadeUp .9s ease forwards;opacity:0;}
+  .hero_left h3 em{font-style:italic;color:var(--gold);}
+  .hero_left p{font-size:1.1rem;color:var(--muted);line-height:1.75;max-width:520px;margin-bottom:2.5rem;font-weight:300;animation:fadeUp .9s .12s ease forwards;opacity:0;}
+  .hero_button,.hero_button2{padding:.9rem 2.2rem;border-radius:50px;font-weight:600;font-size:.95rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;animation:fadeUp .9s .2s ease forwards;opacity:0;}
+  .hero_button{background:var(--gold);color:var(--ink);border:none;}
+  .hero_button:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 30px rgba(201,165,90,.3);}
+  .hero_button2{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:1rem;}
+  .hero_button2:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+  .hero_right{flex:0 0 420px;position:relative;z-index:2;animation:fadeUp .9s .25s ease forwards;opacity:0;}
+  .hero_right .hero-svg-wrap{width:100%;padding:2.5rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden;}
+  .hero_right .hero-svg-wrap::before{content:'';position:absolute;inset:-1px;background:linear-gradient(135deg,rgba(201,165,90,.15),transparent 50%,rgba(90,127,245,.08));border-radius:var(--radius);z-index:-1;}
+  .hero-illustration svg{width:100%;height:auto;}
+
+  /* ═══ CLIENT ROW ═══ */
+  .client_row_container{background:var(--ink-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.5rem 5vw;overflow:hidden;}
+  .client_row{display:flex;align-items:center;gap:3rem;animation:marquee 20s linear infinite;white-space:nowrap;width:max-content;}
+  .brand-chip{font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.4rem 1rem;border:1px solid var(--border);border-radius:50px;background:var(--faint);transition:all .2s;cursor:default;}
+  .brand-chip:hover{border-color:rgba(201,165,90,.3);color:var(--gold);}
+  @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* ═══ SHARED ═══ */
+  section{padding:7rem 5vw;position:relative;z-index:2;}
+  .section-label{display:inline-flex;align-items:center;gap:.6rem;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+  .section-label::after{content:'';height:1px;background:var(--gold);width:40px;min-width:40px;opacity:.4;}
+
+  /* Services */
+  .services{background:var(--ink);}
+  .services_top{display:flex;align-items:flex-start;gap:3rem;margin-bottom:3.5rem;flex-wrap:wrap;}
+  .services_top h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;min-width:220px;}
+  .services_top h3 em,.sec-em{font-style:italic;color:var(--gold);}
+  .services_top p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:480px;flex:1;}
+  .services_bottom{display:flex;flex-direction:column;gap:1rem;}
+  .cards_container{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2.2rem;display:flex;align-items:flex-end;justify-content:space-between;position:relative;overflow:hidden;transition:all .35s;min-height:180px;cursor:pointer;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:translateX(-100%);transition:transform .45s;}
+  .card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.35);border-color:rgba(201,165,90,.2);}
+  .card:hover::before{transform:translateX(0);}
+  .seo_card,.email_card,.content_card{background:linear-gradient(135deg,rgba(201,165,90,.18),rgba(201,165,90,.08));border-color:rgba(201,165,90,.2);}
+  .card_left{display:flex;flex-direction:column;justify-content:space-between;height:100%;gap:1.5rem;}
+  .card_left h4{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.2;}
+  .card_left>div:last-child{display:flex;align-items:center;gap:.5rem;}
+  .card_left>div:last-child span{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+  .arrow-circle{width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:transform .2s;}
+  .card:hover .arrow-circle{transform:rotate(45deg);}
+  .card_right{width:90px;height:90px;flex-shrink:0;background:var(--ink-mid);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+
+  /* CTA */
+  .c_t_a{background:var(--ink-light);padding:5rem 5vw;display:flex;align-items:center;gap:4rem;flex-wrap:wrap;}
+  .c_t_a-left{flex:1;min-width:280px;}
+  .c_t_a-left h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:1rem;}
+  .c_t_a-left p{color:var(--muted);font-size:1rem;line-height:1.7;max-width:480px;margin-bottom:2rem;}
+  .c_t_a-btn{background:var(--gold);color:var(--ink);padding:.9rem 2.2rem;border-radius:50px;font-weight:600;font-size:.95rem;border:none;cursor:pointer;transition:all .25s;}
+  .c_t_a-btn:hover{background:var(--gold-light);transform:translateY(-2px);}
+  .c_t_a-right{flex:0 0 360px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;}
+  .cta-illo{width:100%;height:180px;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;}
+  .cta-stat{text-align:center;}
+  .cta-stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;}
+  .cta-stat-num sup{font-size:1.2rem;vertical-align:super;}
+  .cta-stat-label{font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-top:.3rem;}
+  .cta-divider{width:1px;height:60px;background:var(--border);}
+
+  /* Case Studies */
+  .case_studies{background:var(--ink);}
+  .case_studies_top{margin-bottom:3rem;}
+  .case_studies_top h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.75rem;}
+  .case_studies_top p{color:var(--muted);font-size:1rem;max-width:520px;line-height:1.7;}
+  .case_studies_bottom{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--gold-dim);border:1px solid rgba(201,165,90,.2);border-radius:var(--radius);overflow:hidden;}
+  .case-studies_bottom-card_container{border-right:1px solid rgba(201,165,90,.15);}
+  .case-studies_bottom-card_container:last-child{border-right:none;}
+  .case_studies_bottom-card{padding:2.5rem 2rem;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:2rem;}
+  .case_studies_bottom-card p{font-size:.875rem;color:var(--text);line-height:1.7;}
+  .case_studies_bottom-card>div{display:flex;align-items:center;gap:.5rem;}
+  .case_studies_bottom-card>div span{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+
+  /* Work Process */
+  .work_process{background:var(--ink-light);}
+  .work_process_top{margin-bottom:3rem;}
+  .work_process_top h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.75rem;}
+  .work_process_top p{color:var(--muted);font-size:1rem;}
+  .work_process_bottom{display:flex;flex-direction:column;gap:.75rem;}
+  .work_process_bottom_box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;}
+  .box-top{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2rem;cursor:pointer;}
+  .box-top h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:1rem;}
+  .step-badge{font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:900;color:rgba(201,165,90,.2);line-height:1;flex-shrink:0;}
+  .box-top span{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,165,90,.3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.2rem;font-weight:700;transition:transform .3s;flex-shrink:0;}
+  .box-bottom{padding:0 2rem 1.5rem;font-size:.875rem;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;}
+  .work_process_bottom_box.open .box-bottom{max-height:200px;padding:0 2rem 1.5rem;}
+  .work_process_bottom_box.open .box-top span{transform:rotate(45deg);}
+  .work_process_bottom_box:hover{border-color:rgba(201,165,90,.2);}
+
+  /* Team */
+  .team_members{background:var(--ink);}
+  .team_members_top{margin-bottom:3rem;}
+  .team_members_top h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.75rem;}
+  .team_members_top p{color:var(--muted);font-size:1rem;max-width:520px;}
+  .team_members_bottom{display:flex;flex-direction:column;gap:1rem;}
+  .profile_container_1,.profile_container_2{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .profile_container_2{grid-template-columns:repeat(2,1fr);max-width:660px;}
+  .profile_card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:all .3s;}
+  .profile_card:hover{transform:translateY(-4px);border-color:rgba(201,165,90,.2);box-shadow:0 16px 40px rgba(0,0,0,.3);}
+  .profile_card_top{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+  .profile_card_top_img{width:52px;height:52px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--gold-dim),var(--ink-mid));border:2px solid rgba(201,165,90,.3);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:var(--gold);}
+  .profile_card_top span h4{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:.15rem;}
+  .profile_card_top span .title{font-size:.75rem;color:var(--gold);font-family:'Space Mono',monospace;letter-spacing:.06em;}
+  .profile_card_top_icon{margin-left:auto;width:28px;height:28px;background:var(--gold-dim);border:1px solid rgba(201,165,90,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer;transition:all .2s;flex-shrink:0;}
+  .profile_card_top_icon:hover{background:var(--gold);color:var(--ink);}
+  .profile_card_bottom p{font-size:.82rem;color:var(--muted);line-height:1.6;}
+
+  /* Testimonials */
+  .testimonials{background:var(--ink-light);}
+  .testimonials_top{margin-bottom:3rem;}
+  .testimonials_top h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.75rem;}
+  .testimonials_top p{color:var(--muted);font-size:1rem;max-width:520px;}
+  .swiper{padding-bottom:3rem!important;}
+  .swiper_card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem;display:flex;flex-direction:column;gap:2rem;}
+  .swiper_card .text{font-size:.9rem;color:var(--text);line-height:1.75;font-style:italic;}
+  .swiper_card .author h4{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold);}
+  .swiper_card .author p{font-size:.78rem;color:var(--muted);font-family:'Space Mono',monospace;margin-top:.2rem;}
+  .swiper-pagination-bullet{background:var(--muted)!important;}
+  .swiper-pagination-bullet-active{background:var(--gold)!important;}
+  .swiper-button-prev,.swiper-button-next{color:var(--gold)!important;}
+
+  /* Contact */
+  .contact_us{background:var(--ink);}
+  .contact_us_top{margin-bottom:3rem;}
+  .contact_us_top h3{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.75rem;}
+  .contact_us_top p{color:var(--muted);font-size:1rem;}
+  .contact_us_bottom{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+  .contact_us_form{display:flex;flex-direction:column;gap:1.5rem;}
+  .checklist{display:flex;gap:2rem;}
+  .checklist label{display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.875rem;color:var(--muted);}
+  .checklist input[type=radio]{display:none;}
+  .custom_radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);transition:all .2s;flex-shrink:0;position:relative;}
+  .checklist input[type=radio]:checked+.custom_radio{border-color:var(--gold);background:var(--gold);}
+  .checklist input[type=radio]:checked+.custom_radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--ink);border-radius:50%;}
+  .form_inputs{display:flex;flex-direction:column;gap:1rem;}
+  .input_wrapper{display:flex;flex-direction:column;gap:.4rem;}
+  .input_wrapper label{font-size:.8rem;font-weight:500;color:var(--muted);font-family:'Space Mono',monospace;}
+  .input_wrapper input,.input_wrapper textarea{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);transition:border-color .2s;outline:none;}
+  .input_wrapper input:focus,.input_wrapper textarea:focus{border-color:rgba(201,165,90,.5);}
+  .input_wrapper textarea{resize:vertical;min-height:120px;}
+  .contact_us_form button[type=submit]{background:var(--gold);color:var(--ink);padding:.9rem 2.2rem;border-radius:50px;font-weight:600;font-size:.95rem;border:none;cursor:pointer;transition:all .25s;align-self:flex-start;}
+  .contact_us_form button[type=submit]:hover{background:var(--gold-light);transform:translateY(-2px);}
+  .error_message{font-size:.75rem;color:#f87171;margin-top:.2rem;}
+  .image_wrapper{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem;display:flex;align-items:center;justify-content:center;min-height:300px;}
+  .contact-illo{width:100%;display:flex;flex-direction:column;gap:1.2rem;}
+  .ci-row{display:flex;align-items:center;gap:.75rem;}
+  .ci-icon{width:40px;height:40px;flex-shrink:0;background:var(--gold-dim);border:1px solid rgba(201,165,90,.25);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+  .ci-info{display:flex;flex-direction:column;gap:.2rem;}
+  .ci-label{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .ci-val{font-size:.875rem;color:var(--text);}
+
+  /* Footer */
+  footer{background:var(--ink-light);border-top:1px solid var(--border);padding:4rem 5vw 2rem;position:relative;z-index:2;}
+  .footer_top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border);}
+  .footer_nav_list{display:flex;gap:2rem;list-style:none;flex-wrap:wrap;}
+  .footer_nav_list-list_item a{font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+  .footer_nav_list-list_item a:hover{color:var(--gold);}
+  .footer_social_icons{display:flex;gap:.75rem;}
+  .social-btn{width:34px;height:34px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,165,90,.2);display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--gold);}
+  .social-btn:hover{background:var(--gold);color:var(--ink);}
+  .footer_middle{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem;padding:2.5rem 0;border-bottom:1px solid var(--border);}
+  .footer_address h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:1rem;}
+  .address_wrapper{display:flex;flex-direction:column;gap:.5rem;}
+  .address_wrapper span{font-size:.85rem;color:var(--muted);}
+  .address_wrapper a{color:var(--muted);text-decoration:none;transition:color .2s;}
+  .address_wrapper a:hover{color:var(--gold);}
+  .newsletter_sub{display:flex;flex-direction:column;gap:.75rem;}
+  .newsletter_sub label{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  #newsletter{display:flex;gap:.75rem;flex-wrap:wrap;}
+  #newsletter_email{background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.6rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.875rem;color:var(--text);outline:none;transition:border-color .2s;min-width:200px;}
+  #newsletter_email:focus{border-color:rgba(201,165,90,.5);}
+  #newsletter input[type=submit]{background:var(--gold);color:var(--ink);padding:.6rem 1.4rem;border-radius:50px;font-weight:600;font-size:.85rem;border:none;cursor:pointer;transition:all .2s;}
+  #newsletter input[type=submit]:hover{background:var(--gold-light);}
+  .footer_bottom{padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+  .copyright{display:flex;align-items:center;gap:1.5rem;font-size:.78rem;color:var(--muted);}
+  .privacy_policy{cursor:pointer;text-decoration:underline;transition:color .2s;}
+  .privacy_policy:hover{color:var(--gold);}
+  #backToTop{position:fixed;bottom:2rem;right:2rem;z-index:300;background:var(--gold);color:var(--ink);border:none;border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:600;cursor:pointer;opacity:0;pointer-events:none;transition:all .3s;}
+  #backToTop.visible{opacity:1;pointer-events:auto;}
+  #backToTop:hover{background:var(--gold-light);transform:translateY(-2px);}
+
+  /* ═══ MODALS ═══ */
+  .modal-backdrop{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:1rem;}
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  .modal{background:var(--card);border:1px solid rgba(201,165,90,.2);border-radius:var(--radius);padding:2.2rem;width:100%;max-width:460px;position:relative;transform:translateY(20px);transition:transform .3s;max-height:92vh;overflow-y:auto;}
+  .modal-backdrop.open .modal{transform:translateY(0);}
+  .modal-close{position:absolute;top:.9rem;right:.9rem;width:28px;height:28px;border-radius:50%;background:var(--ink-mid);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;color:var(--muted);transition:all .2s;}
+  .modal-close:hover{border-color:var(--gold);color:var(--gold);}
+  .modal h2{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:900;margin-bottom:.4rem;}
+  .modal h2 em{font-style:italic;color:var(--gold);}
+  .modal-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;}
+  .modal-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;}
+  .modal-tab{flex:1;padding:.5rem;border-radius:50px;font-size:.8rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+  .modal-tab.active{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+  .modal-form{display:flex;flex-direction:column;gap:.85rem;}
+  .modal-field{display:flex;flex-direction:column;gap:.35rem;}
+  .modal-field label{font-family:'Space Mono',monospace;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .modal-field input,.modal-field select{background:var(--ink-mid);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.875rem;color:var(--text);outline:none;transition:border-color .2s;width:100%;}
+  .modal-field input:focus,.modal-field select:focus{border-color:rgba(201,165,90,.5);}
+  .modal-field select option{background:var(--ink-mid);}
+  .modal-field .hint{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+  .modal-btn{background:var(--gold);color:var(--ink);padding:.82rem;border-radius:50px;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:all .25s;margin-top:.3rem;width:100%;}
+  .modal-btn:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 30px rgba(201,165,90,.3);}
+  .modal-divider{display:flex;align-items:center;gap:1rem;margin:.4rem 0;font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace;}
+  .modal-divider::before,.modal-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .modal-switch{text-align:center;font-size:.8rem;color:var(--muted);margin-top:.75rem;}
+  .modal-switch a{color:var(--gold);cursor:pointer;text-decoration:underline;}
+  .modal-success{text-align:center;padding:1rem 0;display:none;flex-direction:column;align-items:center;gap:1rem;}
+  .success-icon{width:56px;height:56px;border-radius:50%;background:rgba(74,222,128,.1);border:2px solid rgba(74,222,128,.3);display:flex;align-items:center;justify-content:center;font-size:1.7rem;}
+  .modal-success h3{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;}
+  .modal-success h3 em{font-style:italic;color:var(--gold);}
+  .modal-success p{font-size:.85rem;color:var(--muted);}
+
+  /* Payment gateway */
+  .step-bar{display:flex;align-items:center;gap:.35rem;margin-bottom:1.2rem;}
+  .s-dot{width:9px;height:9px;border-radius:50%;background:var(--border);flex-shrink:0;transition:all .3s;}
+  .s-dot.done{background:var(--gold);}
+  .s-dot.cur{background:var(--gold);box-shadow:0 0 10px rgba(201,165,90,.5);}
+  .s-line{flex:1;height:1px;background:var(--border);transition:background .3s;}
+  .s-line.done{background:rgba(201,165,90,.5);}
+  .gw-step{display:none;flex-direction:column;gap:.8rem;}
+  .gw-step.active{display:flex;}
+  .pay-methods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;margin:.5rem 0;}
+  .pay-method{background:var(--ink-mid);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .3rem;text-align:center;cursor:pointer;transition:all .2s;}
+  .pay-method:hover,.pay-method.active{border-color:rgba(201,165,90,.4);background:var(--gold-dim);}
+  .pay-method .pm-icon{font-size:1.25rem;margin-bottom:.2rem;}
+  .pay-method .pm-label{font-family:'Space Mono',monospace;font-size:.56rem;color:var(--muted);}
+  .pay-method.active .pm-label{color:var(--gold);}
+  .pay-fields{display:none;flex-direction:column;gap:.7rem;}
+  .pay-fields.active{display:flex;}
+  .sec-badge{display:flex;align-items:center;gap:.5rem;font-size:.68rem;color:var(--muted);font-family:'Space Mono',monospace;background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.1);border-radius:var(--radius-sm);padding:.45rem .7rem;margin-top:.2rem;}
+  .confirm-row{display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .confirm-row:last-child{border-bottom:none;}
+  .confirm-row .cr-label{font-size:.82rem;color:var(--muted);}
+  .confirm-row .cr-val{font-size:.85rem;color:var(--text);font-family:'Space Mono',monospace;}
+  .confirm-row.total .cr-label{font-weight:600;color:var(--text);}
+  .confirm-row.total .cr-val{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:var(--gold);}
+  .two-btns{display:grid;grid-template-columns:1fr 2fr;gap:.5rem;}
+  .btn-back{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.78rem;border-radius:50px;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;width:100%;}
+  .btn-back:hover{border-color:var(--gold);color:var(--gold);}
+  .quick-chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem;}
+  .quick-chip{padding:.32rem .75rem;border-radius:50px;font-size:.76rem;font-weight:600;border:1px solid var(--border);background:var(--ink-mid);color:var(--muted);cursor:pointer;transition:all .2s;}
+  .quick-chip:hover,.quick-chip.sel{background:var(--gold-dim);border-color:rgba(201,165,90,.4);color:var(--gold);}
+  .bal-box{background:linear-gradient(135deg,rgba(201,165,90,.18),rgba(201,165,90,.04));border:1px solid rgba(201,165,90,.22);border-radius:var(--radius);padding:1.1rem;text-align:center;margin-bottom:1.2rem;}
+  .bal-box .bl{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+  .bal-box .ba{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;}
+  .confirm-box{background:var(--ink-mid);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem;margin-bottom:.8rem;}
+  .pay-success-box{background:var(--gold-dim);border:1px solid rgba(201,165,90,.25);border-radius:var(--radius-sm);padding:.8rem 1.1rem;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--gold);margin-top:.5rem;text-align:center;}
+
+  /* Txn history modal */
+  .txn-list{display:flex;flex-direction:column;gap:.5rem;margin-top:.75rem;}
+  .txn-item{display:flex;align-items:center;justify-content:space-between;background:var(--ink-mid);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .85rem;}
+  .txn-l{display:flex;align-items:center;gap:.5rem;}
+  .txn-ic{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;}
+  .txn-ic.c{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);}
+  .txn-ic.d{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);}
+  .txn-nm{font-size:.78rem;font-weight:500;}
+  .txn-dt{font-size:.62rem;color:var(--muted);font-family:'Space Mono',monospace;}
+  .txn-am{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;}
+  .txn-am.c{color:#4ade80;}
+  .txn-am.d{color:#f87171;}
+
+  /* ═══ ANIMATIONS ═══ */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* ═══ RESPONSIVE ═══ */
+  @media(max-width:1100px){#list{gap:1.2rem;}.hw-plus{display:none;}}
+  @media(max-width:1000px){.hero{flex-direction:column;min-height:auto;padding-top:7rem;}.hero_right{flex:none;width:100%;max-width:480px;}.profile_container_1{grid-template-columns:1fr 1fr;}.profile_container_2{grid-template-columns:1fr 1fr;}}
+  @media(max-width:768px){#list{display:none;}.hamburger_menu{display:flex;}#list.open{display:flex;flex-direction:column;position:fixed;top:62px;left:0;right:0;background:rgba(10,10,15,.97);backdrop-filter:blur(20px);padding:2rem 5vw;gap:1.5rem;border-bottom:1px solid var(--border);z-index:150;}.cards_container{grid-template-columns:1fr;}.case_studies_bottom{grid-template-columns:1fr;}.contact_us_bottom{grid-template-columns:1fr;}.profile_container_1,.profile_container_2{grid-template-columns:1fr;}body{cursor:auto;}.cursor-dot,.cursor-ring{display:none;}.user-name-text{display:none;}.hw-label{display:none;}.wallet-dropdown{right:-10px;width:290px;}}
+  @media(max-width:520px){.pay-methods-grid{grid-template-columns:1fr 1fr;}.wallet-dropdown{right:-20px;width:270px;}}
+  </style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ════════════════════  HEADER  ════════════════════ -->
+<header id="header">
+  <div class="logo"><a href="/"><span class="logo-text">Webi<span>Kit</span></span></a></div>
+  <nav class="nav_list_container">
+    <ul id="list">
+      <li class="list_item"><a href="#work-process">About Us</a></li>
+      <li class="list_item"><a href="#services">Services</a></li>
+      <li class="list_item"><a href="#case-studies">Use Cases</a></li>
+      <li class="list_item"><a href="#contact-us">Pricing</a></li>
+      <li class="list_item"><a href="#testimonials">Blog</a></li>
+      <li class="list_btn" id="navQuoteBtn">Request a Quote</li>
+    </ul>
+    <div class="nav-auth">
+      <div id="authBtns">
+        <button class="btn-login" id="openLogin">Log In</button>
+        <button class="btn-signup" id="openSignup">Sign Up</button>
+      </div>
+      <div id="loggedInArea">
+        <!-- ★ WALLET — prominent header button with dropdown ★ -->
+        <div class="hdr-wallet" id="hdrWallet">
+          <div class="hw-icon">💰</div>
+          <div class="hw-info">
+            <div class="hw-label">Wallet</div>
+            <div class="hw-bal">₹<span id="hdrBal">0.00</span></div>
+          </div>
+          <div class="hw-plus">+ Add</div>
+          <!-- Dropdown -->
+          <div class="wallet-dropdown" id="walletDD">
+            <div class="wd-head">
+              <div class="wd-bal-wrap">
+                <div class="wd-lbl">Available Balance</div>
+                <div class="wd-amt">₹<span id="ddBal">0.00</span></div>
+                <div class="wd-sub">Use for all WebiKit services</div>
+              </div>
+              <button class="wd-add-btn" onclick="event.stopPropagation();openGateway()">+ Add Money</button>
+            </div>
+            <div class="wd-body">
+              <div class="wd-section-label">Quick Add</div>
+              <div class="wd-chips">
+                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(100)">₹100</div>
+                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(250)">₹250</div>
+                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(500)">₹500</div>
+                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(1000)">₹1K</div>
+                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(2000)">₹2K</div>
+              </div>
+              <div class="wd-input-row">
+                <input type="number" id="ddAmt" placeholder="Custom ₹ amount" min="10" onclick="event.stopPropagation()"/>
+                <button class="wd-go-btn" onclick="event.stopPropagation();ddQuickAdd(null)">Pay</button>
+              </div>
+              <div class="wd-txns" id="ddTxns">
+                <div class="wd-section-label">Recent Transactions</div>
+                <div id="ddTxnList"><div class="wd-no-txn">No transactions yet</div></div>
+              </div>
+              <button class="wd-full-link" onclick="event.stopPropagation();openGateway()">Open Full Payment Gateway →</button>
+            </div>
+          </div>
+        </div>
+        <div class="user-chip">
+          <div class="user-avatar" id="uAvatar">A</div>
+          <span class="user-name-text" id="uName"></span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">Out</button>
+      </div>
+    </div>
+    <div class="hamburger_menu" id="hamburger_menu"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+  </nav>
+</header>
+
+<!-- ════════════════════  MAIN  ════════════════════ -->
+<main>
+<section class="hero">
+  <div class="hero-grid"></div><div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <section class="hero_left">
+    <h3>Building Powerful Websites<br>That <em>Grow</em> Your Business</h3>
+    <p>At WebiKit, we build modern, high-performing websites and digital strategies that increase visibility, generate leads, and boost business growth.</p>
+    <div>
+      <button class="hero_button" onclick="document.querySelector('#contact-us').scrollIntoView({behavior:'smooth'})">Book a Consultation</button>
+      <a href="#services" class="hero_button2">Explore Services →</a>
+    </div>
+  </section>
+  <section class="hero_right">
+    <div class="hero-svg-wrap"><div class="hero-illustration">
+      <svg viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="gG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c9a55a" stop-opacity=".9"/><stop offset="100%" stop-color="#e8c97a" stop-opacity=".4"/></linearGradient><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5a7ff5" stop-opacity=".5"/><stop offset="100%" stop-color="#5a7ff5" stop-opacity=".1"/></linearGradient></defs>
+        <rect x="20" y="20" width="380" height="260" rx="12" fill="#161625" stroke="rgba(201,165,90,.2)" stroke-width="1"/>
+        <rect x="20" y="20" width="380" height="30" rx="12" fill="#1e1e2e"/><rect x="20" y="38" width="380" height="12" fill="#1e1e2e"/>
+        <circle cx="38" cy="35" r="5" fill="rgba(255,95,87,.5)"/><circle cx="54" cy="35" r="5" fill="rgba(255,189,46,.5)"/><circle cx="70" cy="35" r="5" fill="rgba(40,200,64,.5)"/>
+        <rect x="88" y="29" width="220" height="12" rx="6" fill="rgba(255,255,255,.06)"/>
+        <rect x="30" y="62" width="360" height="20" rx="4" fill="rgba(201,165,90,.06)" stroke="rgba(201,165,90,.08)" stroke-width="1"/>
+        <rect x="38" y="68" width="50" height="8" rx="4" fill="rgba(201,165,90,.4)"/>
+        <rect x="240" y="68" width="30" height="8" rx="4" fill="rgba(255,255,255,.08)"/><rect x="278" y="68" width="30" height="8" rx="4" fill="rgba(255,255,255,.08)"/>
+        <rect x="316" y="66" width="40" height="12" rx="6" fill="rgba(201,165,90,.25)" stroke="rgba(201,165,90,.3)" stroke-width="1"/>
+        <rect x="30" y="94" width="180" height="14" rx="4" fill="rgba(201,165,90,.5)"/><rect x="30" y="115" width="140" height="14" rx="4" fill="rgba(201,165,90,.3)"/>
+        <rect x="30" y="140" width="160" height="6" rx="3" fill="rgba(255,255,255,.1)"/><rect x="30" y="152" width="130" height="6" rx="3" fill="rgba(255,255,255,.07)"/>
+        <rect x="30" y="172" width="90" height="20" rx="10" fill="url(#gG)"/><rect x="130" y="172" width="80" height="20" rx="10" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+        <rect x="240" y="94" width="150" height="110" rx="8" fill="url(#gB)"/>
+        <circle cx="315" cy="149" r="30" fill="rgba(201,165,90,.15)" stroke="rgba(201,165,90,.3)" stroke-width="1"/>
+        <circle cx="315" cy="149" r="16" fill="rgba(201,165,90,.25)"/>
+        <rect x="30" y="210" width="100" height="55" rx="6" fill="#1e1e2e" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <rect x="30" y="218" width="60" height="12" rx="4" fill="rgba(201,165,90,.4)"/><rect x="30" y="236" width="90" height="6" rx="3" fill="rgba(255,255,255,.07)"/><rect x="30" y="248" width="70" height="6" rx="3" fill="rgba(255,255,255,.05)"/>
+        <rect x="145" y="210" width="100" height="55" rx="6" fill="#1e1e2e" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <rect x="145" y="218" width="55" height="12" rx="4" fill="rgba(90,127,245,.5)"/><rect x="145" y="236" width="90" height="6" rx="3" fill="rgba(255,255,255,.07)"/><rect x="145" y="248" width="60" height="6" rx="3" fill="rgba(255,255,255,.05)"/>
+        <rect x="260" y="210" width="130" height="55" rx="6" fill="#1e1e2e" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <rect x="260" y="218" width="70" height="12" rx="4" fill="rgba(201,165,90,.3)"/><rect x="260" y="236" width="120" height="6" rx="3" fill="rgba(255,255,255,.07)"/><rect x="260" y="248" width="80" height="6" rx="3" fill="rgba(255,255,255,.05)"/>
+        <circle cx="315" cy="149" r="40" fill="none" stroke="rgba(201,165,90,.12)" stroke-width="1"><animate attributeName="r" values="30;50;30" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".3;0;.3" dur="3s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div></div>
+  </section>
+</section>
+
+<div class="client_row_container">
+  <div class="client_row">
+    <span class="brand-chip">Amazon</span><span class="brand-chip">Dribbble</span><span class="brand-chip">HubSpot</span><span class="brand-chip">Notion</span><span class="brand-chip">Netflix</span><span class="brand-chip">Zoom</span><span class="brand-chip">Figma</span><span class="brand-chip">Shopify</span>
+    <span class="brand-chip">Amazon</span><span class="brand-chip">Dribbble</span><span class="brand-chip">HubSpot</span><span class="brand-chip">Notion</span><span class="brand-chip">Netflix</span><span class="brand-chip">Zoom</span><span class="brand-chip">Figma</span><span class="brand-chip">Shopify</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <section class="services_top reveal">
+    <div><div class="section-label">What We Do</div><h3>Our <em class="sec-em">Services</em></h3></div>
+    <p>At WebiKit, we provide digital solutions designed to help businesses grow, build a strong online presence, and succeed in the digital world.</p>
+  </section>
+  <section class="services_bottom reveal">
+    <div class="cards_container">
+      <div class="card seo_card" onclick="window.location='website.html'"><div class="card_left"><div><h4>Website</h4><h4>Development</h4></div><div><div class="arrow-circle">↗</div><span>Learn More</span></div></div><div class="card_right">🌐</div></div>
+      <div class="card ppc_card" onclick="window.location='uisuggest.html'"><div class="card_left"><div><h4>UI / UX Design</h4><h4>Website &amp; App</h4></div><div><div class="arrow-circle">↗</div><span>Learn More</span></div></div><div class="card_right">🎨</div></div>
+    </div>
+    <div class="cards_container">
+      <div class="card sm_card" onclick="window.location='audience.html'"><div class="card_left"><div><h4>Increase Social Media</h4><h4>Audience</h4></div><div><div class="arrow-circle">↗</div><span>Learn More</span></div></div><div class="card_right">📈</div></div>
+      <div class="card email_card" onclick="window.location='strategy.html'"><div class="card_left"><div><h4>Digital</h4><h4>Marketing</h4></div><div><div class="arrow-circle">↗</div><span>Learn More</span></div></div><div class="card_right">📣</div></div>
+    </div>
+    <div class="cards_container">
+      <div class="card content_card" onclick="window.location='strategy.html'"><div class="card_left"><div><h4>Digital</h4><h4>Strategy</h4></div><div><div class="arrow-circle">↗</div><span>Learn More</span></div></div><div class="card_right">🗺️</div></div>
+      <div class="card analytics_card" onclick="window.location='design.html'"><div class="card_left"><div><h4>Branding &amp; Logo</h4><h4>&amp; Posters</h4></div><div><div class="arrow-circle">↗</div><span>Learn More</span></div></div><div class="card_right">✦</div></div>
+    </div>
+  </section>
+</section>
+
+<section class="c_t_a reveal">
+  <div class="c_t_a-left">
+    <h3>Let's Make Things <em class="sec-em">Happen</em></h3>
+    <p>Get in touch with WebiKit today and take the first step toward growing your business online.</p>
+    <button class="c_t_a-btn" onclick="document.querySelector('#contact-us').scrollIntoView({behavior:'smooth'})">Get Your Free Proposal</button>
+  </div>
+  <div class="c_t_a-right">
+    <div class="cta-illo">
+      <div class="cta-stat"><div class="cta-stat-num">3.8<sup>×</sup></div><div class="cta-stat-label">Avg. ROAS</div></div>
+      <div class="cta-divider"></div>
+      <div class="cta-stat"><div class="cta-stat-num">62<sup>%</sup></div><div class="cta-stat-label">Traffic Growth</div></div>
+      <div class="cta-divider"></div>
+      <div class="cta-stat"><div class="cta-stat-num">98<sup>%</sup></div><div class="cta-stat-label">Client Retention</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="case_studies" id="case-studies">
+  <div class="case_studies_top reveal"><div class="section-label">Case Studies</div><h3><em class="sec-em">Real</em> Results</h3><p>Explore real-life examples of our proven digital marketing success.</p></div>
+  <div class="case_studies_bottom reveal">
+    <div class="case-studies_bottom-card_container"><div class="case_studies_bottom-card"><p>For a local restaurant, a targeted PPC campaign delivered a <strong>50% increase in website traffic</strong> and a <strong>25% increase in sales</strong>.</p><div><span>Learn More</span><div class="arrow-circle" style="width:24px;height:24px;font-size:.75rem;">↗</div></div></div></div>
+    <div class="case-studies_bottom-card_container"><div class="case_studies_bottom-card"><p>For a B2B software company, our SEO strategy achieved <strong>first page rankings</strong> and a <strong>200% increase</strong> in organic traffic.</p><div><span>Learn More</span><div class="arrow-circle" style="width:24px;height:24px;font-size:.75rem;">↗</div></div></div></div>
+    <div class="case-studies_bottom-card_container"><div class="case_studies_bottom-card"><p>A social media campaign for a retail chain <strong>increased followers by 25%</strong> and generated a <strong>20% increase in online sales</strong>.</p><div><span>Learn More</span><div class="arrow-circle" style="width:24px;height:24px;font-size:.75rem;">↗</div></div></div></div>
+  </div>
+</section>
+
+<section class="work_process" id="work-process">
+  <div class="work_process_top reveal"><div class="section-label">How We Work</div><h3>Our Working <em class="sec-em">Process</em></h3><p>Step-by-Step Process at WebiKit to Deliver the Best Results</p></div>
+  <div class="work_process_bottom reveal">
+    <div class="work_process_bottom_box"><div class="box-top" onclick="toggleBox(this)"><h3><span class="step-badge">01</span>Consultation</h3><span>+</span></div><p class="box-bottom">We discuss your business goals, target audience, and digital requirements to understand your needs and suggest the best solution.</p></div>
+    <div class="work_process_bottom_box"><div class="box-top" onclick="toggleBox(this)"><h3><span class="step-badge">02</span>Project Confirmation &amp; Payment</h3><span>+</span></div><p class="box-bottom">Project begins after 50% advance payment. The remaining 50% is collected after the project is finished and client-approved.</p></div>
+    <div class="work_process_bottom_box"><div class="box-top" onclick="toggleBox(this)"><h3><span class="step-badge">03</span>Research &amp; Strategy Development</h3><span>+</span></div><p class="box-bottom">We research your industry, competitors, and audience to create a strategy that helps your business grow online.</p></div>
+    <div class="work_process_bottom_box"><div class="box-top" onclick="toggleBox(this)"><h3><span class="step-badge">04</span>Implementation</h3><span>+</span></div><p class="box-bottom">Our team develops your website or campaign according to the planned strategy, ensuring high quality and performance.</p></div>
+    <div class="work_process_bottom_box"><div class="box-top" onclick="toggleBox(this)"><h3><span class="step-badge">05</span>Monitoring &amp; Optimisation</h3><span>+</span></div><p class="box-bottom">We continuously monitor performance and make improvements to ensure the best results for your business.</p></div>
+    <div class="work_process_bottom_box"><div class="box-top" onclick="toggleBox(this)"><h3><span class="step-badge">06</span>Delivery &amp; Final Payment</h3><span>+</span></div><p class="box-bottom">After project completion and delivery, the remaining 50% payment is made. We provide full support and guidance.</p></div>
+  </div>
+</section>
+
+<section class="team_members reveal">
+  <div class="team_members_top"><div class="section-label">Who We Are</div><h3>Meet the <em class="sec-em">Team</em></h3><p>The skilled and experienced team behind our successful digital marketing strategies.</p></div>
+  <div class="team_members_bottom">
+    <div class="profile_container_1">
+      <div class="profile_card"><div class="profile_card_top"><div class="profile_card_top_img">AK</div><span><h4>Amit Kumar</h4><p class="title">Founder</p></span><div class="profile_card_top_icon">in</div></div><div class="profile_card_bottom"><p>10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy.</p></div></div>
+      <div class="profile_card"><div class="profile_card_top"><div class="profile_card_top_img">AS</div><span><h4>Ayush Sahai</h4><p class="title">Head of Marketing (CMO)</p></span><div class="profile_card_top_icon">in</div></div><div class="profile_card_bottom"><p>7+ years of experience in project management and team leadership.</p></div></div>
+      <div class="profile_card"><div class="profile_card_top"><div class="profile_card_top_img">AB</div><span><h4>Ayush Bisht</h4><p class="title">Head of Sales (CSO)</p></span><div class="profile_card_top_icon">in</div></div><div class="profile_card_bottom"><p>5+ years in SEO and content creation. Proficient in keyword research and on-page optimisation.</p></div></div>
+    </div>
+    <div class="profile_container_2">
+      <div class="profile_card"><div class="profile_card_top"><div class="profile_card_top_img">MS</div><span><h4>Manya Singh</h4><p class="title">Head of Operations (COO)</p></span><div class="profile_card_top_icon">in</div></div><div class="profile_card_bottom"><p>3+ years in paid search advertising. Skilled in campaign management and performance analysis.</p></div></div>
+      <div class="profile_card"><div class="profile_card_top"><div class="profile_card_top_img">RJ</div><span><h4>Reena Jha</h4><p class="title">Head of Client Relations (CCR)</p></span><div class="profile_card_top_icon">in</div></div><div class="profile_card_bottom"><p>4+ years in social media marketing. Building engagement and analysing metrics.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <div class="testimonials_top reveal"><div class="section-label">What Clients Say</div><h3>Client <em class="sec-em">Testimonials</em></h3><p>Hear from our satisfied clients about our digital marketing services.</p></div>
+  <div class="testimonials_bottom reveal">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide swiper_card"><p class="text">"We have seen a significant increase in website traffic and leads. The team is professional, responsive, and truly cares about the success of our business."</p><div class="author"><h4>John Smith</h4><p>Marketing Director at XYZ Corp</p></div></div>
+        <div class="swiper-slide swiper_card"><p class="text">"Working with WebiKit has been a game-changer for our online presence. Their expertise helped us increase brand visibility and customer engagement."</p><div class="author"><h4>Emily Rodriguez</h4><p>CMO at TechSolutions Inc.</p></div></div>
+        <div class="swiper-slide swiper_card"><p class="text">"Since partnering with WebiKit, we've seen a significant boost in web traffic. Their team is incredibly responsive and knowledgeable."</p><div class="author"><h4>David Carter</h4><p>VP at Innovate Corp.</p></div></div>
+        <div class="swiper-slide swiper_card"><p class="text">"WebiKit helped us streamline our digital strategy, leading to marked improvement in traffic and conversion rates."</p><div class="author"><h4>Sophia Lee</h4><p>CEO at GlobalTrade Networks</p></div></div>
+        <div class="swiper-slide swiper_card"><p class="text">"Their data-driven approach helped us achieve new levels of engagement with our customers. We couldn't be more pleased."</p><div class="author"><h4>Michael Thompson</h4><p>MD at BrightFuture Enterprises</p></div></div>
+      </div>
+      <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact_us">
+  <div class="contact_us_top reveal"><div class="section-label">Get in Touch</div><h3>Contact <em class="sec-em">Us</em></h3><p>Connect with Us: Let's Discuss Your Digital Marketing Needs</p></div>
+  <section class="contact_us_bottom reveal" id="contact-us">
+    <div class="form_wrapper">
+      <form class="contact_us_form" id="contact" onsubmit="handleContactForm(event)">
+        <div class="checklist">
+          <label for="sayHi"><input type="radio" name="options" id="sayHi" value="Say Hi"/><span class="custom_radio"></span>Say Hi</label>
+          <label for="getQuote"><input type="radio" name="options" id="getQuote" value="Get a Quote" checked/><span class="custom_radio"></span>Get a Quote</label>
+        </div>
+        <div class="form_inputs">
+          <div class="input_wrapper"><label for="cname">Name *</label><input type="text" id="cname" placeholder="Your name"/><p class="error_message" id="nameError"></p></div>
+          <div class="input_wrapper"><label for="cemail">Email *</label><input type="email" id="cemail" placeholder="your@email.com"/><p class="error_message" id="emailError"></p></div>
+          <div class="input_wrapper"><label for="cmsg">Message *</label><textarea id="cmsg" placeholder="Tell us about your project…" maxlength="500"></textarea><p class="error_message" id="msgError"></p></div>
+          <button type="submit">Send Message ✦</button>
+        </div>
+      </form>
+    </div>
+    <div class="image_wrapper">
+      <div class="contact-illo">
+        <div class="ci-row"><div class="ci-icon">📧</div><div class="ci-info"><div class="ci-label">Email</div><div class="ci-val">hello@webikit.in</div></div></div>
+        <div class="ci-row"><div class="ci-icon">📞</div><div class="ci-info"><div class="ci-label">Phone</div><div class="ci-val">+91 98765 43210</div></div></div>
+        <div class="ci-row"><div class="ci-icon">📍</div><div class="ci-info"><div class="ci-label">Address</div><div class="ci-val">New Delhi, India — 110001</div></div></div>
+        <div class="ci-row"><div class="ci-icon">⏰</div><div class="ci-info"><div class="ci-label">Hours</div><div class="ci-val">Mon–Sat · 9 AM – 7 PM IST</div></div></div>
+      </div>
+    </div>
+  </section>
+</section>
+</main>
+
+<footer>
+  <div class="footer_top">
+    <div class="footer_top_logo"><span class="logo-text">Webi<span>Kit</span></span></div>
+    <nav><ul class="footer_nav_list"><li class="footer_nav_list-list_item"><a href="#work-process">About Us</a></li><li class="footer_nav_list-list_item"><a href="#services">Services</a></li><li class="footer_nav_list-list_item"><a href="#case-studies">Use Cases</a></li><li class="footer_nav_list-list_item"><a href="#contact-us">Pricing</a></li><li class="footer_nav_list-list_item"><a href="#testimonials">Blog</a></li></ul></nav>
+    <div class="footer_social_icons"><a href="#" class="social-btn">in</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">𝕏</a></div>
+  </div>
+  <div class="footer_middle">
+    <div class="footer_address"><h3>Contact Us</h3><div class="address_wrapper"><span>Email: <a href="mailto:hello@webikit.in">hello@webikit.in</a></span><span>Phone: <a href="tel:+919876543210">+91 98765 43210</a></span><span>Address: New Delhi, India — 110001</span></div></div>
+    <div class="newsletter_sub"><label>Subscribe to our newsletter</label>
+      <form id="newsletter" onsubmit="handleNewsletter(event)"><div><input type="email" placeholder="your@email.com" id="newsletter_email"/><p class="error_message" id="newsletter_error"></p></div><input type="submit" value="Subscribe to News"/></form>
+    </div>
+  </div>
+  <div class="footer_bottom"><div class="copyright"><p>© <span id="year"></span> WebiKit. All Rights Reserved.</p><span class="privacy_policy">Privacy Policy</span></div></div>
+</footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+
+<!-- ════  AUTH MODAL  ════ -->
+<div class="modal-backdrop" id="authModal">
+  <div class="modal">
+    <div class="modal-close" onclick="closeModal('authModal')">✕</div>
+    <div class="modal-tabs"><button class="modal-tab active" id="tabL" onclick="switchAuth('login')">Log In</button><button class="modal-tab" id="tabS" onclick="switchAuth('signup')">Sign Up</button></div>
+    <div id="loginForm">
+      <h2>Welcome <em>Back</em></h2><p class="modal-sub">Log in to access your dashboard, orders, and wallet.</p>
+      <div class="modal-form">
+        <div class="modal-field"><label>Email</label><input type="email" id="lEmail" placeholder="your@email.com"/></div>
+        <div class="modal-field"><label>Password</label><input type="password" id="lPw" placeholder="••••••••"/><div class="hint" style="text-align:right;margin-top:.2rem;font-size:.7rem;font-family:'Space Mono',monospace;"><a href="#" style="color:var(--gold);">Forgot password?</a></div></div>
+        <button class="modal-btn" onclick="doLogin()">Log In →</button>
+      </div>
+      <div class="modal-divider">or</div>
+      <div class="modal-switch">No account? <a onclick="switchAuth('signup')">Sign Up</a></div>
+    </div>
+    <div id="signupForm" style="display:none;">
+      <h2>Create <em>Account</em></h2><p class="modal-sub">Join WebiKit — manage services, track orders, use your wallet.</p>
+      <div class="modal-form">
+        <div class="modal-field"><label>Full Name</label><input type="text" id="sName" placeholder="Amit Kumar"/></div>
+        <div class="modal-field"><label>Email</label><input type="email" id="sEmail" placeholder="your@email.com"/></div>
+        <div class="modal-field"><label>Phone</label><input type="tel" id="sPhone" placeholder="+91 98765 43210"/></div>
+        <div class="modal-field"><label>Password</label><input type="password" id="sPw" placeholder="Min 8 characters"/><div class="hint">Include a number and special character.</div></div>
+        <button class="modal-btn" onclick="doSignup()">Create Account →</button>
+      </div>
+      <div class="modal-divider">or</div>
+      <div class="modal-switch">Have account? <a onclick="switchAuth('login')">Log In</a></div>
+    </div>
+    <div class="modal-success" id="authOK"><div class="success-icon">✓</div><h3>Welcome to <em>WebiKit</em>!</h3><p>Your account is ready. Add money to your wallet to get started.</p></div>
+  </div>
+</div>
+
+<!-- ════  FULL PAYMENT GATEWAY MODAL  ════ -->
+<div class="modal-backdrop" id="gwModal">
+  <div class="modal" style="max-width:490px;">
+    <div class="modal-close" onclick="closeModal('gwModal')">✕</div>
+    <!-- Step bar -->
+    <div class="step-bar">
+      <div class="s-dot cur" id="sd1"></div><div class="s-line" id="sl1"></div>
+      <div class="s-dot" id="sd2"></div><div class="s-line" id="sl2"></div>
+      <div class="s-dot" id="sd3"></div>
+    </div>
+    <!-- Balance -->
+    <div class="bal-box"><div class="bl">Current Wallet Balance</div><div class="ba">₹<span id="gwBal">0.00</span></div></div>
+
+    <!-- STEP 1 -->
+    <div class="gw-step active" id="gws1">
+      <h2>Add <em>Money</em></h2><p class="modal-sub">Choose how much to add to your WebiKit wallet.</p>
+      <div style="font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">Quick Select</div>
+      <div class="quick-chips">
+        <div class="quick-chip" onclick="gwPickAmt(100,this)">₹100</div>
+        <div class="quick-chip" onclick="gwPickAmt(250,this)">₹250</div>
+        <div class="quick-chip" onclick="gwPickAmt(500,this)">₹500</div>
+        <div class="quick-chip" onclick="gwPickAmt(1000,this)">₹1,000</div>
+        <div class="quick-chip" onclick="gwPickAmt(2000,this)">₹2,000</div>
+        <div class="quick-chip" onclick="gwPickAmt(5000,this)">₹5,000</div>
+      </div>
+      <div class="modal-field"><label>Custom Amount (₹)</label><input type="number" id="gwAmt" placeholder="Enter amount (min ₹10)" min="10" max="100000"/></div>
+      <button class="modal-btn" onclick="gwNext(1)">Choose Payment Method →</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="gw-step" id="gws2">
+      <h2>Payment <em>Method</em></h2>
+      <p class="modal-sub">Adding <strong style="color:var(--gold);">₹<span id="gwAmtShow">0</span></strong> to your wallet.</p>
+      <div style="font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;">Select Method</div>
+      <div class="pay-methods-grid">
+        <div class="pay-method active" id="gpm-upi" onclick="gwPickMethod('upi')"><div class="pm-icon">📱</div><div class="pm-label">UPI</div></div>
+        <div class="pay-method" id="gpm-card" onclick="gwPickMethod('card')"><div class="pm-icon">💳</div><div class="pm-label">Card</div></div>
+        <div class="pay-method" id="gpm-net" onclick="gwPickMethod('net')"><div class="pm-icon">🏦</div><div class="pm-label">Net Banking</div></div>
+        <div class="pay-method" id="gpm-gpay" onclick="gwPickMethod('gpay')"><div class="pm-icon">📲</div><div class="pm-label">GPay/PhonePe</div></div>
+        <div class="pay-method" id="gpm-emi" onclick="gwPickMethod('emi')"><div class="pm-icon">🗓️</div><div class="pm-label">EMI</div></div>
+        <div class="pay-method" id="gpm-crypto" onclick="gwPickMethod('crypto')"><div class="pm-icon">₿</div><div class="pm-label">Crypto</div></div>
+      </div>
+      <div class="pay-fields active" id="gpf-upi">
+        <div class="modal-field"><label>UPI ID</label><input type="text" id="gwUpi" placeholder="name@paytm or name@upi"/></div>
+        <div class="sec-badge">🔒 Secured · RBI Compliant · Instant credit</div>
+      </div>
+      <div class="pay-fields" id="gpf-card">
+        <div class="modal-field"><label>Card Number</label><input type="text" id="gwCard" placeholder="1234 5678 9012 3456" maxlength="19"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;">
+          <div class="modal-field"><label>Expiry</label><input type="text" id="gwExp" placeholder="MM / YY" maxlength="7"/></div>
+          <div class="modal-field"><label>CVV</label><input type="password" id="gwCvv" placeholder="•••" maxlength="3"/></div>
+        </div>
+        <div class="modal-field"><label>Name on Card</label><input type="text" placeholder="Amit Kumar"/></div>
+        <div class="sec-badge">🔒 PCI-DSS Compliant · Card data never stored</div>
+      </div>
+      <div class="pay-fields" id="gpf-net">
+        <div class="modal-field"><label>Select Your Bank</label>
+          <select id="gwBank"><option value="">-- Choose bank --</option><option>State Bank of India (SBI)</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Mahindra Bank</option><option>Punjab National Bank</option><option>Bank of Baroda</option><option>Other</option></select>
+        </div>
+        <div class="sec-badge">🔒 Redirected to your bank's secure login page</div>
+      </div>
+      <div class="pay-fields" id="gpf-gpay">
+        <div class="modal-field"><label>Registered Mobile Number</label><input type="tel" placeholder="+91 98765 43210"/></div>
+        <div class="sec-badge">📲 OTP verification via GPay / PhonePe</div>
+      </div>
+      <div class="pay-fields" id="gpf-emi">
+        <div class="modal-field"><label>Card Number</label><input type="text" placeholder="1234 5678 9012 3456" maxlength="19"/></div>
+        <div class="modal-field"><label>EMI Tenure</label><select><option>3 months (0% interest)</option><option>6 months (1.5% interest)</option><option>9 months (2% interest)</option><option>12 months (2.5% interest)</option></select></div>
+        <div class="sec-badge">📋 EMI processed via your bank. T&amp;C apply.</div>
+      </div>
+      <div class="pay-fields" id="gpf-crypto">
+        <div class="modal-field"><label>Cryptocurrency</label><select><option>Bitcoin (BTC)</option><option>Ethereum (ETH)</option><option>USDT (TRC20)</option><option>USDC</option></select></div>
+        <div class="modal-field"><label>Your Wallet Address</label><input type="text" placeholder="0x... or bc1..."/></div>
+        <div class="sec-badge">⛓️ Crypto payments are final. Confirm before proceeding.</div>
+      </div>
+      <div class="two-btns">
+        <button class="btn-back" onclick="gwBack(2)">← Back</button>
+        <button class="modal-btn" style="margin-top:0;" onclick="gwNext(2)">Review &amp; Confirm →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="gw-step" id="gws3">
+      <h2>Confirm <em>Payment</em></h2><p class="modal-sub">Review your order before finalising.</p>
+      <div class="confirm-box">
+        <div class="confirm-row"><span class="cr-label">Amount</span><span class="cr-val" id="cfAmt">₹0</span></div>
+        <div class="confirm-row"><span class="cr-label">Method</span><span class="cr-val" id="cfMeth">—</span></div>
+        <div class="confirm-row"><span class="cr-label">Processing Fee</span><span class="cr-val" style="color:#4ade80;">₹0.00 Free</span></div>
+        <div style="height:1px;background:var(--border);margin:.5rem 0;"></div>
+        <div class="confirm-row total"><span class="cr-label">Total Charged</span><span class="cr-val" id="cfTotal">₹0</span></div>
+        <div class="confirm-row"><span class="cr-label">New Balance</span><span class="cr-val" style="color:#4ade80;font-size:.75rem;">₹<span id="cfNewBal">0.00</span></span></div>
+      </div>
+      <div class="sec-badge" style="margin-bottom:.8rem;">🔒 256-bit SSL · PCI Compliant · Instant wallet credit after payment</div>
+      <div class="two-btns">
+        <button class="btn-back" onclick="gwBack(3)">← Edit</button>
+        <button class="modal-btn" style="margin-top:0;" id="gwConfirmBtn" onclick="gwConfirm()">Confirm &amp; Pay ✦</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="modal-success" id="gwOK">
+      <div class="success-icon">✓</div>
+      <h3>Payment <em>Successful!</em></h3>
+      <p id="gwOKMsg">₹500 added to your wallet.</p>
+      <div class="pay-success-box">New Balance: ₹<span id="gwOKBal">0.00</span></div>
+      <button class="modal-btn" style="margin-top:.5rem;" onclick="closeModal('gwModal')">Done ✦</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+/* CURSOR */
+const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+document.addEventListener('mousemove',e=>{dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px';setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';},60);});
+document.querySelectorAll('a,button,.card,.profile_card,.swiper_card,.work_process_bottom_box,.wd-chip,.quick-chip,.pay-method').forEach(el=>{el.addEventListener('mouseenter',()=>{ring.style.transform='translate(-50%,-50%) scale(1.6)';ring.style.opacity='.8';});el.addEventListener('mouseleave',()=>{ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='.5';});});
+
+/* REVEAL */
+document.querySelectorAll('.reveal').forEach(el=>new IntersectionObserver((en)=>{en.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);e.stopObservation=true;}});},{threshold:.08}).observe(el));
+const ro=new IntersectionObserver((en)=>{en.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);ro.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* HAMBURGER */
+document.getElementById('hamburger_menu').addEventListener('click',()=>document.getElementById('list').classList.toggle('open'));
+/* BACK TO TOP */
+window.addEventListener('scroll',()=>document.getElementById('backToTop').classList.toggle('visible',window.scrollY>400));
+/* YEAR */
+document.getElementById('year').textContent=new Date().getFullYear();
+/* SWIPER */
+new Swiper('.swiper',{slidesPerView:1,spaceBetween:24,loop:true,pagination:{el:'.swiper-pagination',clickable:true},navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'},breakpoints:{768:{slidesPerView:2},1024:{slidesPerView:3}}});
+/* ACCORDION */
+function toggleBox(el){el.parentElement.classList.toggle('open');}
+/* CONTACT */
+function handleContactForm(e){e.preventDefault();const n=document.getElementById('cname').value.trim(),em=document.getElementById('cemail').value.trim(),m=document.getElementById('cmsg').value.trim();let ok=true;['nameError','emailError','msgError'].forEach(id=>document.getElementById(id).textContent='');if(!n){document.getElementById('nameError').textContent='Name required.';ok=false;}if(!em||!/\S+@\S+\.\S+/.test(em)){document.getElementById('emailError').textContent='Valid email required.';ok=false;}if(!m){document.getElementById('msgError').textContent='Message required.';ok=false;}if(ok){e.target.reset();alert('✓ Message sent! We\'ll reply within 24 hours.');}}
+function handleNewsletter(e){e.preventDefault();const em=document.getElementById('newsletter_email').value.trim();if(!em||!/\S+@\S+\.\S+/.test(em)){document.getElementById('newsletter_error').textContent='Valid email required.';return;}document.getElementById('newsletter_error').textContent='';e.target.reset();alert('✓ Subscribed to WebiKit newsletter!');}
+
+/* MODALS */
+function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('.modal-backdrop').forEach(bd=>bd.addEventListener('click',e=>{if(e.target===bd)closeModal(bd.id);}));
+
+/* STATE */
+let S={loggedIn:false,user:null,walletBalance:0,transactions:[],gwMethod:'upi'};
+try{const s=localStorage.getItem('wk3');if(s)S=JSON.parse(s);}catch(e){}
+function save(){try{localStorage.setItem('wk3',JSON.stringify(S));}catch(e){}}
+
+function refreshUI(){
+  const li=S.loggedIn;
+  document.getElementById('authBtns').style.display=li?'none':'flex';
+  document.getElementById('loggedInArea').style.display=li?'flex':'none';
+  if(li&&S.user){
+    const b=S.walletBalance.toFixed(2);
+    ['hdrBal','ddBal','gwBal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=b;});
+    document.getElementById('uName').textContent=S.user.name.split(' ')[0];
+    document.getElementById('uAvatar').textContent=S.user.name.charAt(0).toUpperCase();
+    renderDDTxns();
+  }
+}
+refreshUI();
+
+/* WALLET DROPDOWN */
+const hdrW=document.getElementById('hdrWallet'),wDD=document.getElementById('walletDD');
+hdrW.addEventListener('click',e=>{
+  if(!S.loggedIn){switchAuth('login');openModal('authModal');return;}
+  e.stopPropagation();wDD.classList.toggle('open');
+});
+document.addEventListener('click',()=>wDD.classList.remove('open'));
+wDD.addEventListener('click',e=>e.stopPropagation());
+
+function renderDDTxns(){
+  const list=document.getElementById('ddTxnList');
+  if(!S.transactions.length){list.innerHTML='<div class="wd-no-txn">No transactions yet</div>';return;}
+  list.innerHTML=S.transactions.slice(0,3).map(t=>`<div class="wd-txn-item"><div class="wd-txn-l"><div class="wd-txn-dot ${t.type==='credit'?'c':'d'}">${t.type==='credit'?'↑':'↓'}</div><div><div class="wd-txn-name">${t.name}</div><div class="wd-txn-date">${t.date}</div></div></div><div class="wd-txn-amt ${t.type==='credit'?'c':'d'}">${t.type==='credit'?'+':'-'}₹${t.amount.toLocaleString('en-IN')}</div></div>`).join('');
+}
+function ddQuickAdd(amt){if(!amt){amt=parseFloat(document.getElementById('ddAmt').value);}if(!amt||amt<10){alert('Minimum ₹10');return;}creditWallet(amt,'Quick Add','WALLET');wDD.classList.remove('open');}
+
+/* AUTH */
+document.getElementById('openLogin').onclick=()=>{switchAuth('login');openModal('authModal');};
+document.getElementById('openSignup').onclick=()=>{switchAuth('signup');openModal('authModal');};
+document.getElementById('navQuoteBtn').onclick=()=>{switchAuth('signup');openModal('authModal');};
+document.getElementById('logoutBtn').onclick=()=>{S.loggedIn=false;S.user=null;save();refreshUI();};
+function switchAuth(tab){document.getElementById('loginForm').style.display=tab==='login'?'block':'none';document.getElementById('signupForm').style.display=tab==='signup'?'block':'none';document.getElementById('authOK').style.display='none';document.getElementById('tabL').classList.toggle('active',tab==='login');document.getElementById('tabS').classList.toggle('active',tab==='signup');}
+function doLogin(){const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPw').value;if(!e||!p){alert('Fill in all fields.');return;}S.loggedIn=true;S.user={name:e.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),email:e};save();refreshUI();document.getElementById('loginForm').style.display='none';document.getElementById('authOK').style.display='flex';setTimeout(()=>closeModal('authModal'),2000);}
+function doSignup(){const n=document.getElementById('sName').value.trim(),e=document.getElementById('sEmail').value.trim(),p=document.getElementById('sPw').value;if(!n||!e||!p){alert('Fill in all required fields.');return;}if(p.length<8){alert('Password must be at least 8 characters.');return;}S.loggedIn=true;S.user={name:n,email:e};save();refreshUI();document.getElementById('signupForm').style.display='none';document.getElementById('authOK').style.display='flex';setTimeout(()=>closeModal('authModal'),2000);}
+
+/* WALLET CREDIT */
+function creditWallet(amt,name,method){S.walletBalance+=amt;S.transactions.unshift({type:'credit',name,method,amount:amt,date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})});save();refreshUI();}
+
+/* PAYMENT GATEWAY */
+function openGateway(){if(!S.loggedIn){switchAuth('login');openModal('authModal');return;}wDD.classList.remove('open');gwReset();openModal('gwModal');}
+let gwAmt=0;
+function gwReset(){document.querySelectorAll('.gw-step').forEach(s=>s.classList.remove('active'));document.getElementById('gws1').classList.add('active');document.getElementById('gwOK').style.display='none';document.querySelectorAll('#gws1 .quick-chip').forEach(c=>c.classList.remove('sel'));document.getElementById('gwAmt').value='';gwSetStep(1);gwPickMethod('upi');}
+function gwSetStep(n){['sd1','sd2','sd3'].forEach((id,i)=>{const d=document.getElementById(id);d.className='s-dot'+(i+1<n?' done':i+1===n?' cur':'');});['sl1','sl2'].forEach((id,i)=>{const l=document.getElementById(id);l.className='s-line'+(i+1<n?' done':'');});}
+function gwPickAmt(a,el){gwAmt=a;document.getElementById('gwAmt').value=a;document.querySelectorAll('#gws1 .quick-chip').forEach(c=>c.classList.remove('sel'));if(el)el.classList.add('sel');}
+function gwPickMethod(m){S.gwMethod=m;document.querySelectorAll('[id^="gpm-"]').forEach(el=>el.classList.remove('active'));document.getElementById('gpm-'+m).classList.add('active');['upi','card','net','gpay','emi','crypto'].forEach(k=>{const f=document.getElementById('gpf-'+k);if(f)f.className='pay-fields'+(k===m?' active':'');});}
+function gwNext(step){
+  if(step===1){const a=parseFloat(document.getElementById('gwAmt').value);if(!a||a<10){alert('Minimum amount is ₹10.');return;}gwAmt=a;document.getElementById('gwAmtShow').textContent=a.toLocaleString('en-IN');document.querySelectorAll('.gw-step').forEach(s=>s.classList.remove('active'));document.getElementById('gws2').classList.add('active');gwSetStep(2);}
+  else if(step===2){if(S.gwMethod==='upi'&&!document.getElementById('gwUpi').value.trim()){alert('Please enter UPI ID.');return;}if(S.gwMethod==='card'&&!document.getElementById('gwCard').value.trim()){alert('Please enter card number.');return;}if(S.gwMethod==='net'&&!document.getElementById('gwBank').value){alert('Please select a bank.');return;}const mLabel={'upi':'UPI','card':'Debit / Credit Card','net':'Net Banking','gpay':'GPay / PhonePe','emi':'EMI','crypto':'Cryptocurrency'};document.getElementById('cfAmt').textContent='₹'+gwAmt.toLocaleString('en-IN');document.getElementById('cfTotal').textContent='₹'+gwAmt.toLocaleString('en-IN');document.getElementById('cfMeth').textContent=mLabel[S.gwMethod];document.getElementById('cfNewBal').textContent=(S.walletBalance+gwAmt).toFixed(2);document.querySelectorAll('.gw-step').forEach(s=>s.classList.remove('active'));document.getElementById('gws3').classList.add('active');gwSetStep(3);}
+}
+function gwBack(step){document.querySelectorAll('.gw-step').forEach(s=>s.classList.remove('active'));if(step===2){document.getElementById('gws1').classList.add('active');gwSetStep(1);}else if(step===3){document.getElementById('gws2').classList.add('active');gwSetStep(2);}}
+function gwConfirm(){const btn=document.getElementById('gwConfirmBtn');btn.textContent='Processing…';btn.disabled=true;setTimeout(()=>{creditWallet(gwAmt,'Wallet Top-up',S.gwMethod.toUpperCase());document.querySelectorAll('.gw-step').forEach(s=>s.classList.remove('active'));const ok=document.getElementById('gwOK');ok.style.display='flex';document.getElementById('gwOKMsg').textContent=`₹${gwAmt.toLocaleString('en-IN')} successfully added to your wallet!`;document.getElementById('gwOKBal').textContent=S.walletBalance.toFixed(2);document.getElementById('gwBal').textContent=S.walletBalance.toFixed(2);btn.textContent='Confirm & Pay ✦';btn.disabled=false;},1800);}
+
+/* Input formatters */
+document.addEventListener('input',function(e){
+  if(e.target.id==='gwCard'){let v=e.target.value.replace(/\D/g,'').substring(0,16);e.target.value=v.replace(/(.{4})/g,'$1 ').trim();}
+  if(e.target.id==='gwExp'){let v=e.target.value.replace(/\D/g,'');if(v.length>=2)v=v.substring(0,2)+' / '+v.substring(2,4);e.target.value=v;}
+});
+</script>
+</body>
+</html>

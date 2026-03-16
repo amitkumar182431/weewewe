@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebiKit Wallet — Payment System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --ink-mid: #13131a;
+    --surface: #1c1c28;
+    --border: #2a2a3d;
+    --gold: #c9a55a;
+    --gold-light: #d4b875;
+    --gold-dim: rgba(201,165,90,0.15);
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+    --white: #ffffff;
+    --success: #4ade80;
+    --error: #f87171;
+    --amber: #ffb84d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,165,90,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,165,90,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.93);
+    backdrop-filter: blur(24px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--gold); font-style: italic; font-weight: 300; }
+
+  .nav-link {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  .nav-link:hover { color: var(--gold); background: var(--gold-dim); }
+
+  /* MAIN */
+  main { padding: 40px 32px; max-width: 960px; margin: 0 auto; }
+
+  /* WALLET CARD */
+  .wallet-card {
+    background: linear-gradient(135deg, rgba(201,165,90,0.15), rgba(201,165,90,0.05));
+    border: 1.5px solid rgba(201,165,90,0.3);
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wallet-card::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(201,165,90,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .wallet-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+
+  .wallet-balance {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+
+  .wallet-balance .currency { font-size: 28px; margin-right: 6px; }
+
+  .wallet-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .wallet-meta-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .wallet-meta-item strong {
+    color: var(--text);
+    display: block;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* BUTTONS */
+  .btn-add-money {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    border-radius: 14px;
+    padding: 16px 32px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 24px rgba(201,165,90,0.3);
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .btn-add-money:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201,165,90,0.4);
+    background: var(--gold-light);
+  }
+
+  .btn-add-money:active { transform: translateY(0); }
+
+  .btn-add-money .icon { font-size: 22px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .badge-pending {
+    background: rgba(255,184,77,0.15);
+    color: var(--amber);
+    border: 1px solid rgba(255,184,77,0.3);
+  }
+
+  .badge-success {
+    background: rgba(74,222,128,0.12);
+    color: var(--success);
+    border: 1px solid rgba(74,222,128,0.25);
+  }
+
+  .badge-failed {
+    background: rgba(248,113,113,0.12);
+    color: var(--error);
+    border: 1px solid rgba(248,113,113,0.25);
+  }
+
+  /* TRANSACTION LIST */
+  .tx-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .tx-item {
+    background: var(--ink-mid);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tx-item:hover {
+    border-color: rgba(201,165,90,0.3);
+    background: var(--surface);
+  }
+
+  .tx-left { display: flex; align-items: center; gap: 16px; }
+
+  .tx-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .tx-icon.pending { background: rgba(255,184,77,0.12); }
+  .tx-icon.approved { background: rgba(74,222,128,0.12); }
+  .tx-icon.declined { background: rgba(248,113,113,0.12); }
+
+  .tx-details { display: flex; flex-direction: column; gap: 4px; }
+  .tx-utr { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 600; color: var(--text); }
+  .tx-time { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  .tx-right { text-align: right; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .tx-amount { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; }
+  .tx-amount.approved { color: var(--success); }
+  .tx-amount.pending { color: var(--amber); }
+  .tx-amount.declined { color: var(--error); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state .empty-icon { font-size: 56px; margin-bottom: 20px; opacity: 0.4; }
+  .empty-state p { font-size: 14px; font-family: 'Space Mono', monospace; line-height: 1.6; }
+
+  /* MODAL OVERLAY */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .modal-overlay.open { display: flex; animation: fadeIn 0.25s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--ink-mid);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 45px;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-height: 580px;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(50px) scale(0.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { color: var(--text); background: var(--border); }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+
+  .modal-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  /* STEP INDICATOR */
+  .step-indicator {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 35px;
+  }
+
+  .step-dot {
+    height: 6px;
+    flex: 1;
+    border-radius: 4px;
+    background: var(--border);
+    transition: all 0.3s;
+  }
+
+  .step-dot.done { background: var(--success); }
+  .step-dot.active { 
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(201,165,90,0.5);
+  }
+
+  /* FORM */
+  .form-group { margin-bottom: 24px; }
+  
+  .step-content {
+    display: none;
+    animation: fadeUp 0.35s ease;
+  }
+  
+  .step-content.active {
+    display: block;
+    animation: fadeUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .form-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Space Mono', monospace;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,165,90,0.12);
+  }
+
+  .form-input.error { border-color: var(--error); }
+
+  .form-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .form-error {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--error);
+    margin-top: 8px;
+    display: none;
+  }
+
+  .form-error.show { display: block; }
+
+  /* INFO BOX */
+  .info-box {
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,165,90,0.25);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .info-box .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .info-box .info-row:last-child { margin-bottom: 0; }
+  .info-box .info-key { color: var(--muted); }
+  .info-box .info-val { font-weight: 600; color: var(--gold); }
+
+  /* BUTTONS */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--ink);
+    box-shadow: 0 4px 24px rgba(201,165,90,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(201,165,90,0.4);
+    background: var(--gold-light);
+  }
+
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--success), #22c55e);
+    color: var(--ink);
+  }
+
+  .btn-success:hover { transform: translateY(-1px); }
+
+  /* SUCCESS STATE */
+  .success-icon {
+    width: 80px; height: 80px;
+    background: rgba(74,222,128,0.1);
+    border: 2.5px solid var(--success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 24px;
+    animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .success-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .success-sub {
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* TIMER */
+  .timer-ring {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+  }
+
+  .timer-circle { position: relative; width: 130px; height: 130px; }
+  .timer-circle svg { transform: rotate(-90deg); }
+  .timer-circle circle { fill: none; stroke-width: 7; stroke-linecap: round; }
+  .timer-circle .bg { stroke: var(--surface); }
+  .timer-circle .progress { stroke: var(--gold); transition: stroke-dashoffset 1s linear; }
+
+  .timer-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timer-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .timer-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .timer-warn { color: var(--error) !important; }
+  .timer-warn-stroke { stroke: var(--error) !important; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    main { padding: 24px 20px; }
+    .wallet-card { padding: 28px; }
+    .wallet-balance { font-size: 40px; }
+    .wallet-meta { flex-direction: column; gap: 16px; }
+    .modal { 
+      padding: 28px; 
+      max-width: 100%;
+      min-height: auto;
+    }
+    .modal-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Webi<span>Kit</span></div>
+    <a href="index.html" class="nav-link">← Back to Home</a>
+  </nav>
+
+  <main>
+
+    <!-- WALLET CARD -->
+    <div class="wallet-card">
+      <div class="wallet-label">Available Balance</div>
+      <div class="wallet-balance">
+        <span class="currency">₹</span><span id="balance-display">0.00</span>
+      </div>
+      <div class="wallet-meta">
+        <div class="wallet-meta-item">User ID <strong id="user-id">—</strong></div>
+        <div class="wallet-meta-item">Last Added <strong id="last-added">—</strong></div>
+        <div class="wallet-meta-item">Total Requests <strong id="total-requests">0</strong></div>
+      </div>
+    </div>
+
+    <button class="btn-add-money" onclick="openModal()">
+      <span class="icon">+</span> Add Money via UPI
+    </button>
+
+    <!-- TRANSACTIONS -->
+    <div class="section-title">
+      Transaction History
+      <span class="badge badge-pending" id="pending-count-badge" style="display:none"></span>
+    </div>
+    <div class="tx-list" id="tx-list">
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <p>No transactions yet.<br>Click "Add Money" to get started.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+
+    <!-- STEP INDICATORS -->
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <!-- STEP 1: Initiate -->
+    <div class="step-content active" id="step-1">
+      <div class="modal-title">Add Money 💳</div>
+      <div class="modal-sub">Pay via UPI and submit your UTR to credit wallet</div>
+
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input class="form-input" id="input-amount" type="number" placeholder="e.g. 500" min="1" max="100000" />
+        <div class="form-hint">Min ₹1 · Max ₹1,00,000</div>
+        <div class="form-error" id="err-amount">Please enter a valid amount.</div>
+      </div>
+
+      <div class="info-box">
+        <div style="font-size:12px; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">Pay to UPI ID</div>
+        <div style="font-size:18px; font-weight:700; color:var(--gold); letter-spacing:1px;">webikit@upi</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">Complete the payment in your UPI app, then return here to submit UTR</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="step1Next()">I've Made the Payment →</button>
+    </div>
+
+    <!-- STEP 2: Timer + UTR -->
+    <div class="step-content" id="step-2">
+      <div class="modal-title">Submit UTR ⏱</div>
+      <div class="modal-sub">Enter your 12-digit UTR number before time runs out</div>
+
+      <div class="timer-ring">
+        <div class="timer-circle">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle class="bg" cx="65" cy="65" r="56" />
+            <circle class="progress" id="timer-progress" cx="65" cy="65" r="56"
+              stroke-dasharray="351.86" stroke-dashoffset="0" />
+          </svg>
+          <div class="timer-text">
+            <div class="timer-num" id="timer-num">2:00</div>
+            <div class="timer-label">remaining</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">UTR Number</label>
+        <input class="form-input" id="input-utr" type="text" placeholder="123456789012" maxlength="12" oninput="formatUTR(this)" />
+        <div class="form-hint">12-digit UTR from your UPI transaction</div>
+        <div class="form-error" id="err-utr">Please enter a valid 12-digit UTR number.</div>
+      </div>
+
+      <div class="info-box">
+        <div class="info-row"><span class="info-key">Amount</span><span class="info-val" id="confirm-amount">—</span></div>
+        <div class="info-row"><span class="info-key">Pay to</span><span class="info-val">webikit@upi</span></div>
+      </div>
+
+      <button class="btn btn-primary" id="submit-btn" onclick="step2Submit()">Submit UTR for Verification</button>
+    </div>
+
+    <!-- STEP 3: Success -->
+    <div class="step-content" id="step-3">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Request Submitted!</div>
+      <div class="success-sub">
+        Your payment request has been sent to admin for verification.<br><br>
+        You'll see your balance updated once approved. This usually takes a few minutes.
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="info-box">
+        <div class="info-row"><span class="info-key">UTR</span><span class="info-val" id="submitted-utr">—</span></div>
+        <div class="info-row"><span class="info-key">Amount</span><span class="info-val" id="submitted-amount">—</span></div>
+        <div class="info-row"><span class="info-key">Status</span><span class="info-val">⏳ Pending Review</span></div>
+      </div>
+
+      <button class="btn btn-success" onclick="closeModal()">Done</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────────
+  let state = {
+    balance: 0,
+    transactions: [],
+    timerInterval: null,
+    timerSeconds: 120,
+    currentAmount: 0,
+    userId: null
+  };
+
+  // Load from localStorage
+  function loadState() {
+    try {
+      const saved = localStorage.getItem('webikit_wallet');
+      if (saved) {
+        state = JSON.parse(saved);
+      } else {
+        state.userId = 'USR-' + Math.floor(100000 + Math.random() * 900000);
+        saveState();
+      }
+    } catch(e) {}
+    updateUI();
+  }
+
+  // Save to localStorage
+  function saveState() {
+    try {
+      localStorage.setItem('webikit_wallet', JSON.stringify(state));
+    } catch(e) {}
+  }
+
+  function updateUI() {
+    document.getElementById('balance-display').textContent = fmt(state.balance);
+    document.getElementById('user-id').textContent = state.userId;
+    
+    if (state.transactions.length > 0) {
+      const lastApproved = state.transactions.find(t => t.status === 'approved');
+      if (lastApproved) {
+        document.getElementById('last-added').textContent = '₹' + fmt(lastApproved.amount);
+      }
+    }
+    
+    renderTransactions();
+  }
+
+  // ─── MODAL ───────────────────────────────────────────────────
+  function openModal() {
+    resetModal();
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    stopTimer();
+    resetModal();
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function resetModal() {
+    stopTimer();
+    goToStep(1);
+    document.getElementById('input-amount').value = '';
+    document.getElementById('input-utr').value = '';
+    document.getElementById('err-amount').classList.remove('show');
+    document.getElementById('err-utr').classList.remove('show');
+    document.getElementById('input-amount').classList.remove('error');
+    document.getElementById('input-utr').classList.remove('error');
+    state.timerSeconds = 120;
+  }
+
+  function goToStep(n) {
+    document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + n).classList.add('active');
+
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById('dot-' + i);
+      dot.classList.remove('done', 'active');
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+  }
+
+  // ─── STEP 1 ───────────────────────────────────────────────────
+  function step1Next() {
+    const amt = parseFloat(document.getElementById('input-amount').value);
+    if (!amt || amt < 1 || amt > 100000) {
+      document.getElementById('input-amount').classList.add('error');
+      document.getElementById('err-amount').classList.add('show');
+      return;
+    }
+    document.getElementById('input-amount').classList.remove('error');
+    document.getElementById('err-amount').classList.remove('show');
+    state.currentAmount = amt;
+    document.getElementById('confirm-amount').textContent = '₹' + fmt(amt);
+    goToStep(2);
+    startTimer();
+  }
+
+  // ─── STEP 2 ───────────────────────────────────────────────────
+  function formatUTR(el) {
+    el.value = el.value.replace(/\D/g, '').slice(0, 12);
+  }
+
+  function step2Submit() {
+    const utr = document.getElementById('input-utr').value.trim();
+    if (utr.length !== 12 || !/^\d{12}$/.test(utr)) {
+      document.getElementById('input-utr').classList.add('error');
+      document.getElementById('err-utr').classList.add('show');
+      return;
+    }
+    document.getElementById('input-utr').classList.remove('error');
+    document.getElementById('err-utr').classList.remove('show');
+
+    stopTimer();
+
+    const tx = {
+      id: 'TXN-' + Date.now(),
+      utr: utr,
+      amount: state.currentAmount,
+      status: 'pending',
+      time: new Date().toISOString(),
+    };
+
+    state.transactions.unshift(tx);
+    saveState();
+    renderTransactions();
+
+    document.getElementById('submitted-utr').textContent = utr;
+    document.getElementById('submitted-amount').textContent = '₹' + fmt(state.currentAmount);
+    goToStep(3);
+  }
+
+  // ─── TIMER ───────────────────────────────────────────────────
+  function startTimer() {
+    state.timerSeconds = 120;
+    updateTimerDisplay();
+    state.timerInterval = setInterval(() => {
+      state.timerSeconds--;
+      updateTimerDisplay();
+      if (state.timerSeconds <= 0) {
+        stopTimer();
+        handleTimerExpiry();
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+  }
+
+  function updateTimerDisplay() {
+    const m = Math.floor(state.timerSeconds / 60);
+    const s = state.timerSeconds % 60;
+    const display = m + ':' + String(s).padStart(2, '0');
+    const el = document.getElementById('timer-num');
+    const prog = document.getElementById('timer-progress');
+    if (!el) return;
+
+    el.textContent = display;
+
+    const maxDash = 351.86;
+    const fraction = state.timerSeconds / 120;
+    prog.style.strokeDashoffset = maxDash * (1 - fraction);
+
+    if (state.timerSeconds <= 20) {
+      el.classList.add('timer-warn');
+      prog.classList.add('timer-warn-stroke');
+    } else {
+      el.classList.remove('timer-warn');
+      prog.classList.remove('timer-warn-stroke');
+    }
+  }
+
+  function handleTimerExpiry() {
+    document.getElementById('input-utr').placeholder = 'Time expired!';
+    document.getElementById('input-utr').disabled = true;
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('timer-num').textContent = '0:00';
+    document.getElementById('timer-num').classList.add('timer-warn');
+  }
+
+  // ─── RENDER TRANSACTIONS ──────────────────────────────────────
+  function renderTransactions() {
+    const list = document.getElementById('tx-list');
+    if (state.transactions.length === 0) {
+      list.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><p>No transactions yet.<br>Click "Add Money" to get started.</p></div>`;
+      return;
+    }
+
+    list.innerHTML = state.transactions.map(tx => `
+      <div class="tx-item">
+        <div class="tx-left">
+          <div class="tx-icon ${tx.status}">
+            ${tx.status === 'pending' ? '⏳' : tx.status === 'approved' ? '✅' : '❌'}
+          </div>
+          <div class="tx-details">
+            <div class="tx-utr">UTR: ${tx.utr}</div>
+            <div class="tx-time">${timeAgo(tx.time)}</div>
+          </div>
+        </div>
+        <div class="tx-right">
+          <div class="tx-amount ${tx.status}">+₹${fmt(tx.amount)}</div>
+          <span class="badge badge-${tx.status === 'approved' ? 'success' : tx.status === 'declined' ? 'failed' : 'pending'}">
+            ${tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}
+          </span>
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('total-requests').textContent = state.transactions.length;
+
+    const pending = state.transactions.filter(t => t.status === 'pending').length;
+    const badge = document.getElementById('pending-count-badge');
+    if (pending > 0) {
+      badge.style.display = '';
+      badge.textContent = `${pending} pending`;
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  // ─── UTILS ───────────────────────────────────────────────────
+  function fmt(n) {
+    return n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function timeAgo(isoString) {
+    const date = new Date(isoString);
+    const s = Math.floor((new Date() - date) / 1000);
+    if (s < 60) return 'just now';
+    if (s < 3600) return Math.floor(s / 60) + ' min ago';
+    return Math.floor(s / 3600) + ' hr ago';
+  }
+
+  // Initialize
+  loadState();
+</script>
+</body>
+</html>
