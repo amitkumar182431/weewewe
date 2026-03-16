@@ -409,26 +409,26 @@
                 <div class="wd-amt">₹<span id="ddBal">0.00</span></div>
                 <div class="wd-sub">Use for all WebiKit services</div>
               </div>
-              <button class="wd-add-btn" onclick="event.stopPropagation();openGateway()">+ Add Money</button>
+              <button class="wd-add-btn" onclick="window.open('pay.html', '_blank')">+ Add Money</button>
             </div>
             <div class="wd-body">
               <div class="wd-section-label">Quick Add</div>
               <div class="wd-chips">
-                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(100)">₹100</div>
-                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(250)">₹250</div>
-                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(500)">₹500</div>
-                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(1000)">₹1K</div>
-                <div class="wd-chip" onclick="event.stopPropagation();ddQuickAdd(2000)">₹2K</div>
+                <div class="wd-chip" onclick="window.open('pay.html', '_blank')">₹100</div>
+                <div class="wd-chip" onclick="window.open('pay.html', '_blank')">₹250</div>
+                <div class="wd-chip" onclick="window.open('pay.html', '_blank')">₹500</div>
+                <div class="wd-chip" onclick="window.open('pay.html', '_blank')">₹1K</div>
+                <div class="wd-chip" onclick="window.open('pay.html', '_blank')">₹2K</div>
               </div>
               <div class="wd-input-row">
-                <input type="number" id="ddAmt" placeholder="Custom ₹ amount" min="10" onclick="event.stopPropagation()"/>
-                <button class="wd-go-btn" onclick="event.stopPropagation();ddQuickAdd(null)">Pay</button>
+                <input type="number" id="ddAmt" placeholder="Custom ₹ amount" min="10" />
+                <button class="wd-go-btn" onclick="window.open('pay.html', '_blank')">Pay</button>
               </div>
               <div class="wd-txns" id="ddTxns">
                 <div class="wd-section-label">Recent Transactions</div>
                 <div id="ddTxnList"><div class="wd-no-txn">No transactions yet</div></div>
               </div>
-              <button class="wd-full-link" onclick="event.stopPropagation();openGateway()">Open Full Payment Gateway →</button>
+              <button class="wd-full-link" onclick="window.open('pay.html', '_blank')">Open Payment Gateway →</button>
             </div>
           </div>
         </div>
@@ -802,16 +802,30 @@ document.querySelectorAll('.modal-backdrop').forEach(bd=>bd.addEventListener('cl
 
 /* STATE */
 let S={loggedIn:false,user:null,walletBalance:0,transactions:[],gwMethod:'upi'};
-try{const s=localStorage.getItem('wk3');if(s)S=JSON.parse(s);}catch(e){}
-function save(){try{localStorage.setItem('wk3',JSON.stringify(S));}catch(e){}}
+try{
+  const s=localStorage.getItem('webikit_wallet');
+  if(s){
+    const data=JSON.parse(s);
+    S.walletBalance=data.balance||0;
+    S.transactions=data.transactions||[];
+  }
+}catch(e){}
+function save(){
+  try{
+    localStorage.setItem('webikit_wallet',JSON.stringify({
+      balance:S.walletBalance,
+      transactions:S.transactions
+    }));
+  }catch(e){}
+}
 
 function refreshUI(){
   const li=S.loggedIn;
   document.getElementById('authBtns').style.display=li?'none':'flex';
   document.getElementById('loggedInArea').style.display=li?'flex':'none';
   if(li&&S.user){
-    const b=S.walletBalance.toFixed(2);
-    ['hdrBal','ddBal','gwBal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=b;});
+    const b=(S.walletBalance||0).toFixed(2);
+    ['hdrBal','ddBal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=b;});
     document.getElementById('uName').textContent=S.user.name.split(' ')[0];
     document.getElementById('uAvatar').textContent=S.user.name.charAt(0).toUpperCase();
     renderDDTxns();
@@ -819,11 +833,24 @@ function refreshUI(){
 }
 refreshUI();
 
+// Listen for storage changes from pay.html
+window.addEventListener('storage',function(e){
+  if(e.key==='webikit_wallet'){
+    try{
+      const data=JSON.parse(e.newValue);
+      S.walletBalance=data.balance||0;
+      S.transactions=data.transactions||[];
+      refreshUI();
+    }catch(err){}
+  }
+});
+
 /* WALLET DROPDOWN */
 const hdrW=document.getElementById('hdrWallet'),wDD=document.getElementById('walletDD');
 hdrW.addEventListener('click',e=>{
   if(!S.loggedIn){switchAuth('login');openModal('authModal');return;}
-  e.stopPropagation();wDD.classList.toggle('open');
+  // Redirect to pay.html in new tab
+  window.open('pay.html', '_blank');
 });
 document.addEventListener('click',()=>wDD.classList.remove('open'));
 wDD.addEventListener('click',e=>e.stopPropagation());
@@ -848,7 +875,11 @@ function doSignup(){const n=document.getElementById('sName').value.trim(),e=docu
 function creditWallet(amt,name,method){S.walletBalance+=amt;S.transactions.unshift({type:'credit',name,method,amount:amt,date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})});save();refreshUI();}
 
 /* PAYMENT GATEWAY */
-function openGateway(){if(!S.loggedIn){switchAuth('login');openModal('authModal');return;}wDD.classList.remove('open');gwReset();openModal('gwModal');}
+function openGateway(){ 
+  if(!S.loggedIn){switchAuth('login');openModal('authModal');return;}
+  // Redirect to dedicated payment page
+  window.open('pay.html', '_blank');
+}
 let gwAmt=0;
 function gwReset(){document.querySelectorAll('.gw-step').forEach(s=>s.classList.remove('active'));document.getElementById('gws1').classList.add('active');document.getElementById('gwOK').style.display='none';document.querySelectorAll('#gws1 .quick-chip').forEach(c=>c.classList.remove('sel'));document.getElementById('gwAmt').value='';gwSetStep(1);gwPickMethod('upi');}
 function gwSetStep(n){['sd1','sd2','sd3'].forEach((id,i)=>{const d=document.getElementById(id);d.className='s-dot'+(i+1<n?' done':i+1===n?' cur':'');});['sl1','sl2'].forEach((id,i)=>{const l=document.getElementById(id);l.className='s-line'+(i+1<n?' done':'');});}
